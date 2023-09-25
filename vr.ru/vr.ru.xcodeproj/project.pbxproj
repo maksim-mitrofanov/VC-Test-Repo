@@ -16,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C8A2E832AC1E2A5001A08B9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4C938D992AC1BD51000BAC31 /* vr.ru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vr.ru.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C938D9C2AC1BD51000BAC31 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C938D9E2AC1BD51000BAC31 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +60,7 @@
 				4C938D9C2AC1BD51000BAC31 /* AppDelegate.swift */,
 				4C938D9E2AC1BD51000BAC31 /* SceneDelegate.swift */,
 				4C938DA02AC1BD51000BAC31 /* ViewController.swift */,
+				4C8A2E832AC1E2A5001A08B9 /* README.md */,
 				4C938DA22AC1BD51000BAC31 /* Main.storyboard */,
 				4C938DA52AC1BD52000BAC31 /* Assets.xcassets */,
 				4C938DA72AC1BD52000BAC31 /* LaunchScreen.storyboard */,
