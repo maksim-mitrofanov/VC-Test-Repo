@@ -12,47 +12,55 @@ class NetworkService {
     private init() { }
     
     func getContent() {
-        let url = URL(string: "https://api.dtf.ru/v2.1/news")!
-        let session = URLSession.shared
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
-        let appName = "dtf-app"
-        let appVersion = "2.2.0"
-        let appBuildType = "release"
-        let deviceName = "Pixel 2"
-        let osName = "Android"
-        let osVersion = "9"
-        let locale = "ru_RU"
-        let screenHeight = "1980"
-        let screenWidth = "1794"
-        
-        let userAgent = "\(appName)-app/\(appVersion); \(appBuildType) (\(deviceName); \(osName)/\(osVersion); \(locale); \(screenHeight)x\(screenWidth)"
-        
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         
-        let task = session.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                // Handle the error
-                print("Error: \(error)")
-                return
-            }
+        let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
+            guard error == nil, let data = data
+            else { return }
             
-            guard let data = data else {
-                // Handle the case where no data was returned
-                print("No data received")
-                return
-            }
-            
-            // Parse and handle the data here (e.g., decoding JSON)
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                print("Response JSON: \(json)")
-            } catch {
-                print("Error parsing JSON: \(error)")
-            }
+            self?.decode(data: data)
         }
         
         task.resume()
+    }
+    
+    func decode(data: Data) {
+        do {
+            let decoder = JSONDecoder()
+            let publicationData = try decoder.decode(Welcome.self, from: data)
+            
+            for firstNewsBlock in publicationData.result.news {
+                print("Subsite name: \(firstNewsBlock.subsite?.name ?? "Error")")
+                print("Subsite image url: \(firstNewsBlock.subsite?.avatar?.data?.uuid ?? "Error")")
+                print("Article date: \(firstNewsBlock.date?.description ?? "Error")")
+                print("Article title: \(firstNewsBlock.title ?? "Error")")
+                print("Article subtitle: \(firstNewsBlock.blocks?[0].data?.text ?? "Error")")
+                print("Comments count: \(firstNewsBlock.counters?.comments?.description ?? "Error")")
+                print("Reposts count: \(firstNewsBlock.counters?.reposts?.description ?? "Error")")
+                print("~~~~~~~~~~~~~~")
+            }
+            
+        } catch {
+            print("Error parsing JSON: \(error)")
+        }
+    }
+}
+
+extension NetworkService {
+    var url: URL { URL(string: "https://api.dtf.ru/v2.1/news")! }
+    var appName: String  { "dtf-app" }
+    var appVersion: String  { "2.2.0" }
+    var appBuildType: String  { "release" }
+    var deviceName: String  { "Pixel 2" }
+    var osName: String  { "Android" }
+    var osVersion: String  { "9" }
+    var locale: String  { "ru_RU" }
+    var screenHeight: String  { "1980" }
+    var screenWidth: String  { "1794" }
+    
+    var userAgent: String {
+        "\(appName)-app/\(appVersion); \(appBuildType) (\(deviceName); \(osName)/\(osVersion); \(locale); \(screenHeight)x\(screenWidth)"
     }
 }

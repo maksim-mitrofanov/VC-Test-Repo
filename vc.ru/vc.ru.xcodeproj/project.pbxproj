@@ -14,6 +14,7 @@
 		4C8A2E9A2AC1E418001A08B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C8A2E992AC1E418001A08B9 /* Assets.xcassets */; };
 		4C8A2E9D2AC1E418001A08B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C8A2E9B2AC1E418001A08B9 /* LaunchScreen.storyboard */; };
 		4C8A2EA52AC1E8F8001A08B9 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A2EA42AC1E8F8001A08B9 /* NetworkService.swift */; };
+		4CF3C81C2AC2AFF000607E3A /* NewsFeedDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF3C81B2AC2AFF000607E3A /* NewsFeedDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		4C8A2E9C2AC1E418001A08B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C8A2E9E2AC1E418001A08B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C8A2EA42AC1E8F8001A08B9 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		4CF3C81B2AC2AFF000607E3A /* NewsFeedDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				4C8A2E922AC1E417001A08B9 /* SceneDelegate.swift */,
 				4C8A2E942AC1E417001A08B9 /* ViewController.swift */,
 				4C8A2EA42AC1E8F8001A08B9 /* NetworkService.swift */,
+				4CF3C81B2AC2AFF000607E3A /* NewsFeedDataModel.swift */,
 				4C8A2E962AC1E417001A08B9 /* Main.storyboard */,
 				4C8A2E992AC1E418001A08B9 /* Assets.xcassets */,
 				4C8A2E9B2AC1E418001A08B9 /* LaunchScreen.storyboard */,
@@ -145,6 +148,7 @@
 				4C8A2E912AC1E417001A08B9 /* AppDelegate.swift in Sources */,
 				4C8A2EA52AC1E8F8001A08B9 /* NetworkService.swift in Sources */,
 				4C8A2E932AC1E417001A08B9 /* SceneDelegate.swift in Sources */,
+				4CF3C81C2AC2AFF000607E3A /* NewsFeedDataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
