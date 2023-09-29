@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     let mainTableView = UITableView()
     let fetchDataButton = UIButton()
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupButton()
@@ -48,7 +48,7 @@ extension ViewController {
         NSLayoutConstraint.activate([
             mainTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 0),
             mainTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: 0),
-            mainTableView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 10),
+            mainTableView.topAnchor.constraint(equalTo: safeArea.topAnchor,         constant: 10),
             mainTableView.bottomAnchor.constraint(equalTo: fetchDataButton.topAnchor, constant: -20)
         ])
     }
@@ -81,7 +81,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell 
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
         else { fatalError() }
         
         cell.setup(from: dummyData[indexPath.row])
