@@ -10,46 +10,56 @@ import Foundation
 
 class VCTableViewCell: UITableViewCell {
     static let id = "VCTableViewCell"
+    static var initCallCount = 0
+    static var setupCallCount = 0
     
+    let subsiteImageView = UIImageView()
     let subsiteNameLabel = UILabel()
-    let publishedTimeLabel = UILabel()
-    let subsiteImage = UIView()
-    let titleLabel = UILabel()
-    let bodyLabel = UILabel()
-    var articleImage = UIImageView()
-    let showMoreOptionsImage = UIImage(systemName: "ellipsis")
-    let showMoreOptionsButton = UIButton(type: .system)
-    let commentsCountImage = UIImage(systemName: "bubble.right")
-    let commentsCountButton = UIButton(type: .system)
+    let timeSincePublishedLabel = UILabel()
+    let showMoreOptionsButton = UIButton()
+    let articleTitleLabel = UILabel()
+    let articleBodyLabel = UILabel()
+    let articleImage = UIImageView()
+    let leaveCommentButton = UIButton()
     let commentsCountLabel = UILabel()
-    let repostsCountImage = UIImage(systemName: "arrow.up.arrow.down.circle")
-    let repostsCountButton = UIButton(type: .system)
+    let repostArticleButton = UIButton()
     let repostsCountLabel = UILabel()
-        
+    let saveArticleButton = UIButton()
+    let voteUpButton = UIButton()
+    let voteDownButton = UIButton()
+    let totalVotesCountLabel = UILabel()
+    
+    let topStackView = UIStackView()
+    let titleAndBodyStackView = UIStackView()
+    let feedbackControlsStackView = UIStackView()
+    
+    let iconTargetSize = CGSize(width: 22, height: 22)
+    let text3MediumFont = UIFont(name: "Roboto-Medium", size: 15)
+    let text3RegularFont = UIFont(name: "Roboto-Regular", size: 15)
+    let headerFont =  UIFont(name: "Roboto-Medium", size: 22)
+            
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupSubsiteImage()
-        setupSubsiteNameLabel()
-        setupPublishedTimeLabel()
-        setupShowMoreOptionsButton()
-        setupTitleLabel()
-        setupBodyLabel()
+        styleSubsiteImage()
+        styleSubsiteNameLabel()
+        stylePublishedTimeLabel()
+        styleShowMoreOptionsButton()
+        styleArticleTitleLabel()
+        styleArticleBodyLabel()
+        setupTopStackView()
+        setupArticleTitleAndSubtitle()
         setupArticleImage()
-        setupCommentsCountButton()
-        setupCommentsCountLabel()
-        setupRepostsCountButton()
-        setupRepostsCountLabel()
-        contentView.backgroundColor = .purple.withAlphaComponent(0.1)
+        setupFeedbackControlsStackView()
     }
-    
+
     func setup(from model: VCCellModel) {
         subsiteNameLabel.text = model.subsiteName
-        publishedTimeLabel.text = model.timeSincePublished
-        titleLabel.text = model.title
-        bodyLabel.text = model.bodyText
-        articleImage.image = UIImage(data: model.mainImageData)
+        timeSincePublishedLabel.text = model.timeSincePublished
+        articleTitleLabel.text = model.title
+        articleBodyLabel.text = model.bodyText
         commentsCountLabel.text = model.commentsCount.description
         repostsCountLabel.text = model.repostsCount.description
+        totalVotesCountLabel.text = model.votes.description
     }
     
     required init?(coder: NSCoder) {
@@ -58,95 +68,63 @@ class VCTableViewCell: UITableViewCell {
 }
 
 private extension VCTableViewCell {
-    func setupSubsiteNameLabel() {
+    func setupArticleTitleAndSubtitle() {
+        titleAndBodyStackView.axis = .vertical
+        titleAndBodyStackView.spacing = 8
+        titleAndBodyStackView.addArrangedSubview(articleTitleLabel)
+        titleAndBodyStackView.addArrangedSubview(articleBodyLabel)
+        
+        contentView.addSubview(titleAndBodyStackView)
+        
+        titleAndBodyStackView.translatesAutoresizingMaskIntoConstraints = false
+        titleAndBodyStackView.backgroundColor = .cyan.withAlphaComponent(0.1)
+        
+        NSLayoutConstraint.activate([
+            titleAndBodyStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleAndBodyStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            titleAndBodyStackView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 16)
+        ])
+    }
+    
+    func styleArticleTitleLabel() {
+        articleTitleLabel.font = headerFont
+        articleTitleLabel.textColor = .black
+        articleTitleLabel.numberOfLines = 0
+    }
+    
+    func styleArticleBodyLabel()  {
+        articleBodyLabel.font = text3RegularFont
+        articleBodyLabel.textColor = .black
+        articleBodyLabel.numberOfLines = 0
+    }
+    
+    func styleSubsiteNameLabel() {
         subsiteNameLabel.textColor = .black
         subsiteNameLabel.numberOfLines = 0
-        subsiteNameLabel.font = UIFont(name: "Roboto-Medium", size: 15)
+        subsiteNameLabel.font = text3MediumFont
+    }
+    
+    func styleSubsiteImage() {
+        subsiteImageView.backgroundColor = .gray
+        subsiteImageView.layer.cornerRadius = 8
         
-        contentView.addSubview(subsiteNameLabel)
-        
-        subsiteNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            subsiteNameLabel.leadingAnchor.constraint(equalTo: subsiteImage.trailingAnchor, constant: 8),
-            subsiteNameLabel.centerYAnchor.constraint(equalTo: subsiteImage.centerYAnchor)
+            subsiteImageView.widthAnchor.constraint(equalToConstant: 22),
+            subsiteImageView.heightAnchor.constraint(equalToConstant: 22)
         ])
     }
     
-    func setupSubsiteImage() {
-        subsiteImage.backgroundColor = .white
-        subsiteImage.layer.cornerRadius = 8
-        
-        contentView.addSubview(subsiteImage)
-        
-        subsiteImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            subsiteImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            subsiteImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            subsiteImage.widthAnchor.constraint(equalToConstant: 22),
-            subsiteImage.heightAnchor.constraint(equalToConstant: 22)
-        ])
+    func stylePublishedTimeLabel() {
+        timeSincePublishedLabel.font = text3RegularFont
+        timeSincePublishedLabel.textColor = .darkGray
     }
     
-    func setupPublishedTimeLabel() {
-        publishedTimeLabel.font = UIFont(name: "Roboto-Regular", size: 15)
-        publishedTimeLabel.textColor = .darkGray
-        
-        contentView.addSubview(publishedTimeLabel)
-        
-        publishedTimeLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            publishedTimeLabel.leadingAnchor.constraint(equalTo: subsiteNameLabel.trailingAnchor, constant: 12),
-            publishedTimeLabel.centerYAnchor.constraint(equalTo: subsiteNameLabel.centerYAnchor)
-        ])
-    }
-    
-    func setupShowMoreOptionsButton() {
+    func styleShowMoreOptionsButton()  {
+        let showMoreOptionsImage = UIImage(systemName: "ellipsis")
         showMoreOptionsButton.setImage(showMoreOptionsImage, for: .normal)
         showMoreOptionsButton.tintColor = .systemGray
-        
-        contentView.addSubview(showMoreOptionsButton)
-        
-        showMoreOptionsButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            showMoreOptionsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            showMoreOptionsButton.centerYAnchor.constraint(equalTo: subsiteNameLabel.centerYAnchor)
-        ])
     }
     
-    func setupTitleLabel() {
-        titleLabel.font = UIFont(name: "Roboto-Medium", size: 22)
-        titleLabel.textColor = .black
-        titleLabel.numberOfLines = 0
-        
-        contentView.addSubview(titleLabel)
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: subsiteNameLabel.bottomAnchor, constant: 12),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
-        ])
-    }
-    
-    func setupBodyLabel() {
-        bodyLabel.font = UIFont(name: "Roboto-Regular", size: 17)
-        bodyLabel.textColor = .black
-        bodyLabel.numberOfLines = 0
-        
-        contentView.addSubview(bodyLabel)
-        
-        bodyLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            bodyLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            bodyLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor)
-        ])
-    }
     
     func setupArticleImage() {
         articleImage.backgroundColor = .black
@@ -156,66 +134,156 @@ private extension VCTableViewCell {
         
         NSLayoutConstraint.activate([
             articleImage.heightAnchor.constraint(equalToConstant: 210),
-            articleImage.topAnchor.constraint(equalTo: bodyLabel.bottomAnchor, constant: 12),
+            articleImage.topAnchor.constraint(equalTo: titleAndBodyStackView.bottomAnchor, constant: 16),
             articleImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             articleImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
     
-    func setupCommentsCountButton() {
-        commentsCountButton.setImage(commentsCountImage, for: .normal)
-        commentsCountButton.tintColor = .systemGray
+    func setupTopStackView() {
+        contentView.addSubview(topStackView)
         
-        contentView.addSubview(commentsCountButton)
+        let subsiteInfoStackView = UIStackView()
+        subsiteInfoStackView.axis = .horizontal
+        subsiteInfoStackView.alignment = .center
+        subsiteInfoStackView.spacing = 8
+        subsiteInfoStackView.backgroundColor = .blue.withAlphaComponent(0.1)
         
-        commentsCountButton.translatesAutoresizingMaskIntoConstraints = false
+        subsiteInfoStackView.addArrangedSubview(subsiteImageView)
+        subsiteInfoStackView.addArrangedSubview(subsiteNameLabel)
+        subsiteInfoStackView.addArrangedSubview(timeSincePublishedLabel)
+        subsiteInfoStackView.setCustomSpacing(12, after: subsiteNameLabel)
+                
+        topStackView.axis = .horizontal
+        topStackView.alignment = .center
+        topStackView.distribution = .equalSpacing
+        topStackView.spacing = 8
+        topStackView.backgroundColor = .orange.withAlphaComponent(0.1)
         
-        NSLayoutConstraint.activate([
-            commentsCountButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            commentsCountButton.topAnchor.constraint(equalTo: articleImage.bottomAnchor, constant: 16),
-            commentsCountButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
-        ])
-    }
-    
-    func setupCommentsCountLabel() {
-        commentsCountLabel.textColor = .systemGray
-        commentsCountLabel.font = UIFont(name: "Roboto-Medium", size: 15)
-        
-        contentView.addSubview(commentsCountLabel)
-        
-        commentsCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            commentsCountLabel.leadingAnchor.constraint(equalTo: commentsCountButton.trailingAnchor, constant: 4),
-            commentsCountLabel.centerYAnchor.constraint(equalTo: commentsCountButton.centerYAnchor)
-        ])
-    }
-    
-    func setupRepostsCountButton() {
-        repostsCountButton.setImage(repostsCountImage, for: .normal)
-        repostsCountButton.tintColor = .systemGray
-        
-        contentView.addSubview(repostsCountButton)
-        repostsCountButton.translatesAutoresizingMaskIntoConstraints = false
+        topStackView.addArrangedSubview(subsiteInfoStackView)
+        topStackView.addArrangedSubview(showMoreOptionsButton)
 
+        topStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            repostsCountButton.leadingAnchor.constraint(equalTo: commentsCountLabel.trailingAnchor, constant: 16),
-            repostsCountButton.centerYAnchor.constraint(equalTo: commentsCountLabel.centerYAnchor)
+            topStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            topStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            topStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
     
-    func setupRepostsCountLabel() {
-        repostsCountLabel.textColor = .systemGray
-        repostsCountLabel.font = UIFont(name: "Roboto-Medium", size: 15)
+    func setupFeedbackControlsStackView() {
+        let commentsStackView = getCommentsStackView()
+        let repostsStackView = getRepostsStackView()
+        let savePostButton = getSavePostButton()
+        let votesStackView = getVotesStackView()
         
-        contentView.addSubview(repostsCountLabel)
+        let interactionsStackView = UIStackView()
+        interactionsStackView.axis = .horizontal
+        interactionsStackView.spacing = 20
+        interactionsStackView.alignment = .leading
         
-        repostsCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        interactionsStackView.addArrangedSubview(commentsStackView)
+        interactionsStackView.addArrangedSubview(repostsStackView)
+        interactionsStackView.addArrangedSubview(savePostButton)
+        
+        interactionsStackView.backgroundColor = .green.withAlphaComponent(0.1)
+       
+        contentView.addSubview(feedbackControlsStackView)
+        feedbackControlsStackView.axis = .horizontal
+        feedbackControlsStackView.alignment = .center
+        feedbackControlsStackView.distribution = .equalSpacing
+        
+        feedbackControlsStackView.addArrangedSubview(interactionsStackView)
+        feedbackControlsStackView.addArrangedSubview(votesStackView)
+        
+        feedbackControlsStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            repostsCountLabel.leadingAnchor.constraint(equalTo: repostsCountButton.trailingAnchor, constant: 4),
-            repostsCountLabel.centerYAnchor.constraint(equalTo: repostsCountButton.centerYAnchor)
+            feedbackControlsStackView.topAnchor.constraint(equalTo: articleImage.bottomAnchor, constant: 16),
+            feedbackControlsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            feedbackControlsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            feedbackControlsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
+        
+        feedbackControlsStackView.backgroundColor = .systemPink.withAlphaComponent(0.1)
+    }
+    
+    func getVotesStackView() -> UIStackView {
+        let votesStackView = UIStackView()
+        votesStackView.axis = .horizontal
+        votesStackView.alignment = .trailing
+        votesStackView.spacing = 6.5
+        
+        let voteDownButton = UIButton(type: .system)
+        let voteDownImage = UIImage(systemName: "chevron.down")
+        voteDownButton.setImage(voteDownImage, for: .normal)
+        voteDownButton.tintColor = .customSecondaryGray
+        
+        let voteUpButton = UIButton(type: .system)
+        let voteUpImage = UIImage(systemName: "chevron.up")
+        voteUpButton.setImage(voteUpImage, for: .normal)
+        voteUpButton.tintColor = .customSecondaryGray
+        
+        totalVotesCountLabel.textColor = .customSecondaryGray
+        totalVotesCountLabel.font = text3MediumFont
+        
+        votesStackView.addArrangedSubview(voteDownButton)
+        votesStackView.addArrangedSubview(totalVotesCountLabel)
+        votesStackView.addArrangedSubview(voteUpButton)
+        
+        votesStackView.backgroundColor = .purple.withAlphaComponent(0.1)
+        return votesStackView
+    }
+    
+    func getSavePostButton() -> UIButton {
+        let savePostButton = UIButton(type: .system)
+        let savePostImage = UIImage(named: "save_post_icon")
+        let resizedImage = savePostImage?.scalePreservingAspectRatio(targetSize: iconTargetSize)
+        savePostButton.setImage(resizedImage, for: .normal)
+        savePostButton.tintColor = .customSecondaryGray
+        
+        return savePostButton
+    }
+    
+    func getRepostsStackView() -> UIStackView {
+        let repostsStackView = UIStackView()
+        repostsStackView.axis = .horizontal
+        repostsStackView.alignment = .center
+        repostsStackView.spacing = 4
+        
+        let repostsCountImage = UIImage(named: "repost_icon")
+        let resizedImage = repostsCountImage?.scalePreservingAspectRatio(targetSize: iconTargetSize)
+        let repostsCountButton = UIButton(type: .system)
+        repostsCountButton.setImage(resizedImage, for: .normal)
+        repostsCountButton.tintColor = .customSecondaryGray
+        
+        repostsCountLabel.font = text3MediumFont
+        repostsCountLabel.textColor = .customSecondaryGray
+        
+        repostsStackView.addArrangedSubview(repostsCountButton)
+        repostsStackView.addArrangedSubview(repostsCountLabel)
+        
+        return repostsStackView
+    }
+    
+    func getCommentsStackView() -> UIStackView {
+        let commentsStackView = UIStackView()
+        commentsStackView.axis = .horizontal
+        commentsStackView.alignment = .center
+        commentsStackView.spacing = 4
+        
+        let commentsCountImage = UIImage(named: "comments_icon")
+        let resizedImage = commentsCountImage?.scalePreservingAspectRatio(targetSize: iconTargetSize)
+        let commentsCountButton = UIButton(type: .system)
+        commentsCountButton.setImage(resizedImage, for: .normal)
+        commentsCountButton.tintColor = .customSecondaryGray
+        
+        commentsCountLabel.font = UIFont(name: "Roboto-Medium", size: 15)
+        commentsCountLabel.textColor = .customSecondaryGray
+        commentsStackView.addArrangedSubview(commentsCountButton)
+        commentsStackView.addArrangedSubview(commentsCountLabel)
+        
+        return commentsStackView
     }
 }
 

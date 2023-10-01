@@ -40,9 +40,7 @@ extension ViewController {
         fetchDataButton.addTarget(self, action: #selector(fetchData), for: .touchUpInside)
     }
     
-    private func setupTableViewLayout() {
-        mainTableView.backgroundColor = .orange.withAlphaComponent(0.2)
-        
+    private func setupTableViewLayout() {        
         let safeArea = view.safeAreaLayoutGuide
         mainTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
