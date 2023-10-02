@@ -11,22 +11,25 @@ class NetworkService {
     static let shared = NetworkService()
     private init() { }
     
-    func getContent() {
+    var completion: ((Welcome?) -> Void)? = nil
+        
+    func fetchContent() {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        
+                
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
             guard error == nil, let data = data
             else { return }
             
-            self?.decode(data: data)
+            let decodedData = self?.decode(data: data)
+            self?.completion?(decodedData)
         }
         
         task.resume()
     }
     
-    func decode(data: Data) {
+    func decode(data: Data) -> Welcome? {
         do {
             let decoder = JSONDecoder()
             let publicationData = try decoder.decode(Welcome.self, from: data)
@@ -42,8 +45,10 @@ class NetworkService {
                 print("~~~~~~~~~~~~~~")
             }
             
+            return publicationData
+            
         } catch {
-            print("Error parsing JSON: \(error)")
+            return nil
         }
     }
 }

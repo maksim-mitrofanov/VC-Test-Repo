@@ -9,8 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private let dummyData = VCCellModel.templates
-    
+    let presenter = NewsPresenter()
     let mainTableView = UITableView()
     let fetchDataButton = UIButton()
     
@@ -18,10 +17,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupButton()
         setupTableView()
+        presenter.delegate = self
     }
     
     @objc private func fetchData() {
-        NetworkService.shared.getContent()
+        presenter.fetchLatestNews()
     }
 }
 
@@ -75,15 +75,21 @@ extension ViewController {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dummyData.count
+        presenter.presentedNews.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
         else { fatalError() }
         
-        cell.setup(from: dummyData[indexPath.row])
+        cell.setup(from: presenter.presentedNews[indexPath.row])
         return cell
+    }
+}
+
+extension ViewController: NewsPresenterDelegate {
+    func newsWereUpdated() {
+        mainTableView.reloadData()
     }
 }
 
