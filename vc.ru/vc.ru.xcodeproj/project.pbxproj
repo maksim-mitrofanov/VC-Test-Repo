@@ -77,6 +77,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C5B27F12ACC4D3A00D41E79 /* Data Models */ = {
+			isa = PBXGroup;
+			children = (
+				4CAB769F2AC5B4AA00BDA988 /* VCCellModel.swift */,
+				4CF3C81B2AC2AFF000607E3A /* NewsFeedDataModel.swift */,
+			);
+			path = "Data Models";
+			sourceTree = "<group>";
+		};
 		4C8A2E842AC1E417001A08B9 = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +108,7 @@
 				4C8A2E942AC1E417001A08B9 /* ViewController.swift */,
 				4CBAD6CC2ACAA71E008C5FEA /* NewsPresenter.swift */,
 				4C8A2EA42AC1E8F8001A08B9 /* NetworkService.swift */,
-				4CF3C81B2AC2AFF000607E3A /* NewsFeedDataModel.swift */,
+				4C5B27F12ACC4D3A00D41E79 /* Data Models */,
 				4CBAD6D02ACAA877008C5FEA /* System */,
 				4CBAD6CF2ACAA81E008C5FEA /* TableViewCell */,
 				4CBAD6CE2ACAA806008C5FEA /* Extensions */,
@@ -143,7 +152,6 @@
 			isa = PBXGroup;
 			children = (
 				4CAB76672AC5A69700BDA988 /* VCTableViewCell.swift */,
-				4CAB769F2AC5B4AA00BDA988 /* VCCellModel.swift */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
