@@ -44,7 +44,7 @@ private extension NewsPresenter {
             mainImageData: dummyImageData,
             commentsCount: newsModel.counters.comments,
             repostsCount: newsModel.counters.reposts,
-            votes: 0,
+            votes: newsModel.likes.summ,
             id: newsModel.id.description
         )
         

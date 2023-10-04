@@ -77,7 +77,6 @@ private extension VCTableViewCell {
         contentView.addSubview(titleAndBodyStackView)
         
         titleAndBodyStackView.translatesAutoresizingMaskIntoConstraints = false
-        titleAndBodyStackView.backgroundColor = .cyan.withAlphaComponent(0.1)
         
         NSLayoutConstraint.activate([
             titleAndBodyStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -147,7 +146,6 @@ private extension VCTableViewCell {
         subsiteInfoStackView.axis = .horizontal
         subsiteInfoStackView.alignment = .center
         subsiteInfoStackView.spacing = 8
-        subsiteInfoStackView.backgroundColor = .blue.withAlphaComponent(0.1)
         
         subsiteInfoStackView.addArrangedSubview(subsiteImageView)
         subsiteInfoStackView.addArrangedSubview(subsiteNameLabel)
@@ -158,7 +156,6 @@ private extension VCTableViewCell {
         topStackView.alignment = .center
         topStackView.distribution = .equalSpacing
         topStackView.spacing = 8
-        topStackView.backgroundColor = .orange.withAlphaComponent(0.1)
         
         topStackView.addArrangedSubview(subsiteInfoStackView)
         topStackView.addArrangedSubview(showMoreOptionsButton)
@@ -185,9 +182,7 @@ private extension VCTableViewCell {
         interactionsStackView.addArrangedSubview(commentsStackView)
         interactionsStackView.addArrangedSubview(repostsStackView)
         interactionsStackView.addArrangedSubview(savePostButton)
-        
-        interactionsStackView.backgroundColor = .green.withAlphaComponent(0.1)
-       
+               
         contentView.addSubview(feedbackControlsStackView)
         feedbackControlsStackView.axis = .horizontal
         feedbackControlsStackView.alignment = .center
@@ -204,8 +199,6 @@ private extension VCTableViewCell {
             feedbackControlsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             feedbackControlsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
-        
-        feedbackControlsStackView.backgroundColor = .systemPink.withAlphaComponent(0.1)
     }
     
     func getVotesStackView() -> UIStackView {
@@ -231,7 +224,6 @@ private extension VCTableViewCell {
         votesStackView.addArrangedSubview(totalVotesCountLabel)
         votesStackView.addArrangedSubview(voteUpButton)
         
-        votesStackView.backgroundColor = .purple.withAlphaComponent(0.1)
         return votesStackView
     }
     

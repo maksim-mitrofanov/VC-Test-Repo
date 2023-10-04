@@ -25,6 +25,11 @@ extension ServerFeedback {
         let title: String
         let date: Int
         let counters: NewsCounters
+        let likes: Likes
+    }
+    
+    struct Likes: Codable {
+        let summ: Int
     }
     
     struct Subsite: Codable {

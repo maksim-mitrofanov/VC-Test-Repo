@@ -18,6 +18,7 @@ class ViewController: UIViewController {
         setupButton()
         setupTableView()
         presenter.delegate = self
+        presenter.fetchLatestNews()
     }
     
     @objc private func fetchData() {
@@ -31,6 +32,7 @@ extension ViewController {
         view.addSubview(mainTableView)
         setupTableViewLayout()
         mainTableView.dataSource = self
+        mainTableView.delegate = self
         mainTableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
     }
     
@@ -40,7 +42,7 @@ extension ViewController {
         fetchDataButton.addTarget(self, action: #selector(fetchData), for: .touchUpInside)
     }
     
-    private func setupTableViewLayout() {        
+    private func setupTableViewLayout() {
         let safeArea = view.safeAreaLayoutGuide
         mainTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -73,9 +75,13 @@ extension ViewController {
     }
 }
 
-extension ViewController: UITableViewDataSource {
+extension ViewController: UITableViewDataSource , UITableViewDelegate{
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return presenter.presentedNews.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.presentedNews.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -84,6 +90,18 @@ extension ViewController: UITableViewDataSource {
         
         cell.setup(from: presenter.presentedNews[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section > 0 {
+            let view = UIView()
+            view.frame = CGRect(x: 0, y: 0, width: 200, height: 16)
+            view.backgroundColor = .lightGray.withAlphaComponent(0.2)
+            
+            return view
+        }
+        
+        return nil
     }
 }
 
