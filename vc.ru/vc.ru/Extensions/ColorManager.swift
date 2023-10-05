@@ -9,4 +9,5 @@ import UIKit
 
 extension UIColor {
     static let customSecondaryGray = UIColor(named: "SecondaryTextColor")
+    static let tableViewBackgroundColor = UIColor(named: "TableViewBackgroundColor")
 }

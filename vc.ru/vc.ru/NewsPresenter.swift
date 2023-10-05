@@ -12,6 +12,10 @@ protocol NewsPresenterProtocol {
     func receive(data: ServerFeedback?)
 }
 
+protocol NewsPresenterDelegate {
+    func newsWereUpdated()
+}
+
 final class NewsPresenter: NewsPresenterProtocol {
     private(set) var presentedNews = [VCCellModel]()
     var delegate: NewsPresenterDelegate?
@@ -38,7 +42,7 @@ private extension NewsPresenter {
         let model =  VCCellModel(
             subsiteImageData: nil,
             subsiteName: newsModel.subsite.name ,
-            timeSincePublished: newsModel.date.description,
+            timeSincePublished: decode(unixTime: newsModel.date),
             title: newsModel.title,
             bodyText: "Error",
             mainImageData: dummyImageData,
@@ -50,8 +54,12 @@ private extension NewsPresenter {
         
         return model
     }
-}
-
-protocol NewsPresenterDelegate {
-    func newsWereUpdated()
+    
+    func decode(unixTime: Int) -> String {
+        let decodedUnixTime = TimeInterval(unixTime)
+        let currentTime = Date().timeIntervalSince1970
+        let hoursDifference = Int((currentTime - decodedUnixTime) / 3600)
+        
+        return "\(hoursDifference) hours"
+    }
 }

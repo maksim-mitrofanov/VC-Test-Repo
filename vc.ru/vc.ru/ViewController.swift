@@ -45,6 +45,8 @@ extension ViewController {
     private func setupTableViewLayout() {
         let safeArea = view.safeAreaLayoutGuide
         mainTableView.translatesAutoresizingMaskIntoConstraints = false
+        mainTableView.separatorStyle = .none
+        mainTableView.backgroundColor = UIColor.tableViewBackgroundColor
         NSLayoutConstraint.activate([
             mainTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 0),
             mainTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: 0),
@@ -89,19 +91,18 @@ extension ViewController: UITableViewDataSource , UITableViewDelegate{
         else { fatalError() }
         
         cell.setup(from: presenter.presentedNews[indexPath.row])
+        cell.selectionStyle = .none
         return cell
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section > 0 {
-            let view = UIView()
-            view.frame = CGRect(x: 0, y: 0, width: 200, height: 16)
-            view.backgroundColor = .lightGray.withAlphaComponent(0.2)
-            
-            return view
-        }
-        
-        return nil
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = UIColor.clear
+        return footerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(0)
     }
 }
 
