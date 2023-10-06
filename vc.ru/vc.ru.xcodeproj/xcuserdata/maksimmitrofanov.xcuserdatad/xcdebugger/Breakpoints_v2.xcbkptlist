@@ -3,4 +3,117 @@
    uuid = "24A3534B-66E5-41B7-9908-0FE16134A347"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "476700D4-B56C-49E2-9F79-E1CC94BDF5C0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "vc.ru/NetworkService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "decode(data:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "476700D4-B56C-49E2-9F79-E1CC94BDF5C0 - 9dc71136fa6e4efc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "vc_ru.NetworkService.decode(data: Foundation.Data) -&gt; Swift.Optional&lt;vc_ru.ServerFeedback&gt;"
+                  moduleName = "vc.ru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimmitrofanov/Developer/VC-Test-Repo/vc.ru/vc.ru/NetworkService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "212">
+               </Location>
+               <Location
+                  uuid = "476700D4-B56C-49E2-9F79-E1CC94BDF5C0 - 9dc71136fa6e4e93"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "vc_ru.NetworkService.decode(data: Foundation.Data) -&gt; Swift.Optional&lt;vc_ru.ServerFeedback&gt;"
+                  moduleName = "vc.ru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimmitrofanov/Developer/VC-Test-Repo/vc.ru/vc.ru/NetworkService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "212">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "953EE4AA-7666-4CAE-AD3D-15EDB55ECB37"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "vc.ru/NewsPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "fetchLatestNews()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "953EE4AA-7666-4CAE-AD3D-15EDB55ECB37 - 673f18fe96648beb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "vc_ru.NewsPresenter.fetchLatestNews() -&gt; ()"
+                  moduleName = "vc.ru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimmitrofanov/Developer/VC-Test-Repo/vc.ru/vc.ru/NewsPresenter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "608">
+               </Location>
+               <Location
+                  uuid = "953EE4AA-7666-4CAE-AD3D-15EDB55ECB37 - 673f18fe96648beb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "vc_ru.NewsPresenter.fetchLatestNews() -&gt; ()"
+                  moduleName = "vc.ru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimmitrofanov/Developer/VC-Test-Repo/vc.ru/vc.ru/NewsPresenter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "600">
+               </Location>
+               <Location
+                  uuid = "953EE4AA-7666-4CAE-AD3D-15EDB55ECB37 - 673f18fe96648beb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "vc_ru.NewsPresenter.fetchLatestNews() -&gt; ()"
+                  moduleName = "vc.ru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimmitrofanov/Developer/VC-Test-Repo/vc.ru/vc.ru/NewsPresenter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "564">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

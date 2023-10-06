@@ -13,9 +13,8 @@ final class NetworkService {
     
     weak var presenter: NewsPresenter? = nil
         
-    func fetchContent(with id: String? = nil) {
+    func fetchContent(with id: Int? = nil) {
         var request = generateUrlRequest()
-        request.setValue(id, forHTTPHeaderField: "lastId")
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
             guard error == nil, let data = data

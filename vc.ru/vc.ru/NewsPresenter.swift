@@ -22,7 +22,8 @@ final class NewsPresenter: NewsPresenterProtocol {
     
     func fetchLatestNews() {
         NetworkService.shared.presenter = self
-        NetworkService.shared.fetchContent(with: presentedNews.last?.id)
+        let lastID = presentedNews.last?.id
+        NetworkService.shared.fetchContent(with: lastID)
     }
     
     func receive(data: ServerFeedback?) {
@@ -37,29 +38,33 @@ final class NewsPresenter: NewsPresenterProtocol {
 
 private extension NewsPresenter {
     func convert(newsModel: ServerFeedback.NewsBlock) -> VCCellModel {
-        let dummyImageData = UIImage(named: "demo_image")!.jpegData(compressionQuality: 1)!
-        
         let model =  VCCellModel(
-            subsiteImageData: nil,
+            subsiteImageUUID: newsModel.subsite.avatar.data.uuid,
             subsiteName: newsModel.subsite.name ,
             timeSincePublished: decode(unixTime: newsModel.date),
             title: newsModel.title,
             bodyText: "Error",
-            mainImageData: dummyImageData,
+            mainImageUUID: "nil",
             commentsCount: newsModel.counters.comments,
             repostsCount: newsModel.counters.reposts,
             votes: newsModel.likes.summ,
-            id: newsModel.id.description
+            id: newsModel.id
         )
         
         return model
     }
     
     func decode(unixTime: Int) -> String {
-        let decodedUnixTime = TimeInterval(unixTime)
-        let currentTime = Date().timeIntervalSince1970
-        let hoursDifference = Int((currentTime - decodedUnixTime) / 3600)
+        let secondsFromGMT: Int = TimeZone.current.secondsFromGMT()
+        let receivedDateInCurrentTimeZone = Date(timeIntervalSince1970: TimeInterval(unixTime + secondsFromGMT))
+        let currentDateInCurrentTimeZone = Date().addingTimeInterval(TimeInterval(secondsFromGMT))
         
-        return "\(hoursDifference) hours"
+        let differenceInSeconds = currentDateInCurrentTimeZone.timeIntervalSince1970 - receivedDateInCurrentTimeZone.timeIntervalSince1970
+        
+        if differenceInSeconds < 3600 {
+            return "\(Int(differenceInSeconds / 60)) минут"
+        } else {
+            return "\(Int(differenceInSeconds / 3600)) часов"
+        }
     }
 }

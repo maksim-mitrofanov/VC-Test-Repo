@@ -9,14 +9,14 @@ import UIKit
 import Foundation
 
 struct VCCellModel: Identifiable {
-    let subsiteImageData: Data?
+    let subsiteImageUUID: String
     let subsiteName: String
     let timeSincePublished: String
     let title: String
     let bodyText: String
-    let mainImageData: Data
+    let mainImageUUID: String
     let commentsCount: Int
     let repostsCount: Int
     let votes: Int
-    let id: String
+    let id: Int
 }

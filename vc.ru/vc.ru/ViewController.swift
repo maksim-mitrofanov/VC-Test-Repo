@@ -90,7 +90,7 @@ extension ViewController: UITableViewDataSource , UITableViewDelegate{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
         else { fatalError() }
         
-        cell.setup(from: presenter.presentedNews[indexPath.row])
+        cell.setup(from: presenter.presentedNews[indexPath.section + indexPath.row])
         cell.selectionStyle = .none
         return cell
     }
