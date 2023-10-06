@@ -60,6 +60,12 @@ class VCTableViewCell: UITableViewCell {
         commentsCountLabel.text = model.commentsCount.description
         repostsCountLabel.text = model.repostsCount.description
         totalVotesCountLabel.text = model.votes.description
+        
+        NetworkService.shared.fetchAsset(uuid: model.subsiteImageUUID, completion: { data in
+            DispatchQueue.main.async {
+                self.subsiteImageView.image = UIImage(data: data)
+            }
+        })
     }
     
     required init?(coder: NSCoder) {
@@ -104,6 +110,7 @@ private extension VCTableViewCell {
     }
     
     func styleSubsiteImage() {
+        subsiteImageView.clipsToBounds = true
         subsiteImageView.backgroundColor = .gray
         subsiteImageView.layer.cornerRadius = 8
         

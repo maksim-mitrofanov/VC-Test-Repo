@@ -8,25 +8,26 @@
 import UIKit
 import Foundation
 
-protocol NewsPresenterProtocol {
-    func receive(data: ServerFeedback?)
+protocol NetworkServiceDelegate: AnyObject {
+    func receiveNews(data: ServerFeedback?)
 }
 
 protocol NewsPresenterDelegate {
     func newsWereUpdated()
 }
 
-final class NewsPresenter: NewsPresenterProtocol {
+final class NewsPresenter: NetworkServiceDelegate {
+    private(set) var imageCaches = [String : Data]()
     private(set) var presentedNews = [VCCellModel]()
     var delegate: NewsPresenterDelegate?
     
     func fetchLatestNews() {
         NetworkService.shared.presenter = self
         let lastID = presentedNews.last?.id
-        NetworkService.shared.fetchContent(with: lastID)
+        NetworkService.shared.fetchNews(lastId: lastID)
     }
     
-    func receive(data: ServerFeedback?) {
+    func receiveNews(data: ServerFeedback?) {
         let decodedNews = data?.result.news.map(convert(newsModel:))
         presentedNews.append(contentsOf: decodedNews ?? [])
         

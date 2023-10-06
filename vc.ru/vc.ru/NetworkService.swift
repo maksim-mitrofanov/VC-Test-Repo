@@ -11,17 +11,30 @@ final class NetworkService {
     static let shared = NetworkService()
     private init() { }
     
-    weak var presenter: NewsPresenter? = nil
+    weak var presenter: NetworkServiceDelegate? = nil
         
-    func fetchContent(with id: Int? = nil) {
-        let request = generateURLRequest(lastID: id)
+    func fetchNews(lastId id: Int? = nil) {
+        let request = generateNewsRequest(lastID: id)
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
             guard error == nil, let data = data
             else { return }
             
             let decodedData = self?.decode(data: data)
-            self?.presenter?.receive(data: decodedData)
+            self?.presenter?.receiveNews(data: decodedData)
+        }
+        
+        task.resume()
+    }
+    
+    func fetchAsset(uuid: String, completion: @escaping ((Data) -> Void)) {
+        let request = generateAssetsRequest(uuid: uuid)
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard error == nil, let data = data
+            else { return }
+            
+            completion(data)
         }
         
         task.resume()
@@ -29,7 +42,8 @@ final class NetworkService {
 }
 
 private extension NetworkService {
-    var urlString: String { "https://api.dtf.ru/v2.1/news" }
+    var newsUrlString: String { "https://api.dtf.ru/v2.1/news" }
+    var assetsUrlString: String { "https://leonardo.osnova.io/" }
     var appName: String  { "dtf-app" }
     var appVersion: String  { "2.2.0" }
     var appBuildType: String  { "release" }
@@ -44,14 +58,20 @@ private extension NetworkService {
         "\(appName)-app/\(appVersion); \(appBuildType) (\(deviceName); \(osName)/\(osVersion); \(locale); \(screenHeight)x\(screenWidth)"
     }
     
-    func generateURLRequest(lastID: Int? = nil) -> URLRequest {
-        var urlComponents = URLComponents(string: urlString)!
+    func generateNewsRequest(lastID: Int? = nil) -> URLRequest {
+        var urlComponents = URLComponents(string: newsUrlString)!
         urlComponents.queryItems = [URLQueryItem(name: "lastId", value: lastID?.description)]
         
         var request = URLRequest(url: urlComponents.url!)
         request.httpMethod = "GET"
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         
+        return request
+    }
+    
+    func generateAssetsRequest(uuid: String) -> URLRequest {
+        let url = URL(string: assetsUrlString + uuid)!
+        var request = URLRequest(url: url)
         return request
     }
     
