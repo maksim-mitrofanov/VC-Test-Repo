@@ -14,7 +14,7 @@ final class NetworkService {
     weak var presenter: NewsPresenter? = nil
         
     func fetchContent(with id: Int? = nil) {
-        var request = generateUrlRequest()
+        let request = generateURLRequest(lastID: id)
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
             guard error == nil, let data = data
@@ -29,7 +29,7 @@ final class NetworkService {
 }
 
 private extension NetworkService {
-    var url: URL { URL(string: "https://api.dtf.ru/v2.1/news")! }
+    var urlString: String { "https://api.dtf.ru/v2.1/news" }
     var appName: String  { "dtf-app" }
     var appVersion: String  { "2.2.0" }
     var appBuildType: String  { "release" }
@@ -44,8 +44,11 @@ private extension NetworkService {
         "\(appName)-app/\(appVersion); \(appBuildType) (\(deviceName); \(osName)/\(osVersion); \(locale); \(screenHeight)x\(screenWidth)"
     }
     
-    func generateUrlRequest() -> URLRequest {
-        var request = URLRequest(url: url)
+    func generateURLRequest(lastID: Int? = nil) -> URLRequest {
+        var urlComponents = URLComponents(string: urlString)!
+        urlComponents.queryItems = [URLQueryItem(name: "lastId", value: lastID?.description)]
+        
+        var request = URLRequest(url: urlComponents.url!)
         request.httpMethod = "GET"
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         
