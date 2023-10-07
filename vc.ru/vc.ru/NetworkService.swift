@@ -27,12 +27,12 @@ final class NetworkService {
         task.resume()
     }
     
-    func fetchAsset(uuid: String, completion: @escaping ((Data) -> Void)) {
+    func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void)) {
         let request = generateAssetsRequest(uuid: uuid)
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard error == nil, let data = data
-            else { return }
+            else { completion(nil); return }
             
             completion(data)
         }
@@ -71,7 +71,7 @@ private extension NetworkService {
     
     func generateAssetsRequest(uuid: String) -> URLRequest {
         let url = URL(string: assetsUrlString + uuid)!
-        var request = URLRequest(url: url)
+        let request = URLRequest(url: url)
         return request
     }
     

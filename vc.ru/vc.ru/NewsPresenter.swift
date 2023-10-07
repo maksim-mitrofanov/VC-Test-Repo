@@ -17,7 +17,7 @@ protocol NewsPresenterDelegate {
 }
 
 final class NewsPresenter: NetworkServiceDelegate {
-    private(set) var imageCaches = [String : Data]()
+    private var subsiteAvaratarCache = [String:Data?]()
     private(set) var presentedNews = [VCCellModel]()
     var delegate: NewsPresenterDelegate?
     
@@ -35,13 +35,33 @@ final class NewsPresenter: NetworkServiceDelegate {
             self.delegate?.newsWereUpdated()
         }
     }
+    
+    func getSubsiteAvatar(uuid: String) -> Data? {
+        var avatarData: Data? = nil
+        
+        if let cachedData = subsiteAvaratarCache[uuid] { avatarData = cachedData }
+        else {
+            let group = DispatchGroup()
+            
+            group.enter()
+            NetworkService.shared.fetchAsset(uuid: uuid) { fetchedData in
+                avatarData = fetchedData
+                self.subsiteAvaratarCache[uuid] = fetchedData
+                group.leave()
+            }
+            
+            group.wait()
+        }
+        
+        return avatarData
+    }
 }
 
 private extension NewsPresenter {
     func convert(newsModel: ServerFeedback.NewsBlock) -> VCCellModel {
-        let model =  VCCellModel(
+        let model = VCCellModel(
             subsiteImageUUID: newsModel.subsite.avatar.data.uuid,
-            subsiteName: newsModel.subsite.name ,
+            subsiteName: newsModel.subsite.name,
             timeSincePublished: decode(unixTime: newsModel.date),
             title: newsModel.title,
             bodyText: "Error",

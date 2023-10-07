@@ -33,6 +33,7 @@ extension ServerFeedback {
     }
     
     struct Subsite: Codable {
+        let id: Int
         let name: String
         let avatar: Avatar
     }

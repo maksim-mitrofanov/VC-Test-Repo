@@ -52,7 +52,7 @@ class VCTableViewCell: UITableViewCell {
         setupFeedbackControlsStackView()
     }
 
-    func setup(from model: VCCellModel) {
+    func setup(from model: VCCellModel, subsiteAvatarData: Data?) {
         subsiteNameLabel.text = model.subsiteName
         timeSincePublishedLabel.text = model.timeSincePublished
         articleTitleLabel.text = model.title
@@ -61,11 +61,9 @@ class VCTableViewCell: UITableViewCell {
         repostsCountLabel.text = model.repostsCount.description
         totalVotesCountLabel.text = model.votes.description
         
-        NetworkService.shared.fetchAsset(uuid: model.subsiteImageUUID, completion: { data in
-            DispatchQueue.main.async {
-                self.subsiteImageView.image = UIImage(data: data)
-            }
-        })
+        if let subsiteAvatarData {
+            subsiteImageView.image = UIImage(data: subsiteAvatarData)
+        }
     }
     
     required init?(coder: NSCoder) {
