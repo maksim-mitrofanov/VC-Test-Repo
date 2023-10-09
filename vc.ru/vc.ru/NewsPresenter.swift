@@ -18,7 +18,7 @@ protocol NewsPresenterDelegate {
 
 final class NewsPresenter: NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
-    private(set) var presentedNews = [VCCellModel]()
+    private var presentedNews = [VCCellModel]()
     var delegate: NewsPresenterDelegate?
     
     func fetchLatestNews() {
@@ -35,6 +35,17 @@ final class NewsPresenter: NetworkServiceDelegate {
         DispatchQueue.main.async {
             self.delegate?.newsWereUpdated()
         }
+    }
+    
+    func getCell(at index: Int) -> VCCellModel {
+        if index == (cellCount - 1) {
+            fetchLatestNews()
+        }
+        return presentedNews[index]
+    }
+    
+    var cellCount: Int {
+        presentedNews.count
     }
 }
 
@@ -65,12 +76,13 @@ private extension NewsPresenter {
                 let avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
                 let articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
                 let articleSubtitle = model.getArticleSubtitle()
+                let timeDescription = TimeDecoder.getDescriptionFor(unixTime: model.date)
                 
                 let model = VCCellModel(
                     subsiteImageData: avatarImageData,
                     subsiteName: model.subsite.name,
                     articleImageData: articleImageData,
-                    timeSincePublished: NewsPresenter.decode(unixTime: model.date),
+                    timeSincePublished: timeDescription,
                     title: model.title,
                     bodyText: articleSubtitle,
                     commentsCount: model.counters.comments,
@@ -81,20 +93,6 @@ private extension NewsPresenter {
                 
                 self.presentedNews.append(model)
             }
-        }
-    }
-    
-    static func decode(unixTime: Int) -> String {
-        let secondsFromGMT: Int = TimeZone.current.secondsFromGMT()
-        let receivedDateInCurrentTimeZone = Date(timeIntervalSince1970: TimeInterval(unixTime + secondsFromGMT))
-        let currentDateInCurrentTimeZone = Date().addingTimeInterval(TimeInterval(secondsFromGMT))
-        
-        let differenceInSeconds = currentDateInCurrentTimeZone.timeIntervalSince1970 - receivedDateInCurrentTimeZone.timeIntervalSince1970
-        
-        if differenceInSeconds < 3600 {
-            return "\(Int(differenceInSeconds / 60)) минут"
-        } else {
-            return "\(Int(differenceInSeconds / 3600)) часов"
         }
     }
 }

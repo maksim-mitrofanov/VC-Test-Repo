@@ -32,6 +32,7 @@
 		4CBAD6CD2ACAA71E008C5FEA /* NewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBAD6CC2ACAA71E008C5FEA /* NewsPresenter.swift */; };
 		4CCE0B1B2AC9136F00F286E2 /* UIImage+Conevnience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCE0B1A2AC9136F00F286E2 /* UIImage+Conevnience.swift */; };
 		4CCE0B1D2AC925DA00F286E2 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCE0B1C2AC925DA00F286E2 /* ColorManager.swift */; };
+		4CEA5A712AD3D7E000CA97BC /* TimeDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEA5A702AD3D7E000CA97BC /* TimeDecoder.swift */; };
 		4CF3C81C2AC2AFF000607E3A /* NewsFeedDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF3C81B2AC2AFF000607E3A /* NewsFeedDataModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		4CBAD6CC2ACAA71E008C5FEA /* NewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsPresenter.swift; sourceTree = "<group>"; };
 		4CCE0B1A2AC9136F00F286E2 /* UIImage+Conevnience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Conevnience.swift"; sourceTree = "<group>"; };
 		4CCE0B1C2AC925DA00F286E2 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
+		4CEA5A702AD3D7E000CA97BC /* TimeDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDecoder.swift; sourceTree = "<group>"; };
 		4CF3C81B2AC2AFF000607E3A /* NewsFeedDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,6 +146,7 @@
 				4C92FEF72AC7E493007D5F81 /* Roboto */,
 				4CCE0B1C2AC925DA00F286E2 /* ColorManager.swift */,
 				4CCE0B1A2AC9136F00F286E2 /* UIImage+Conevnience.swift */,
+				4CEA5A702AD3D7E000CA97BC /* TimeDecoder.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				4CAB76682AC5A69700BDA988 /* VCTableViewCell.swift in Sources */,
 				4C8A2E952AC1E417001A08B9 /* ViewController.swift in Sources */,
 				4C8A2E912AC1E417001A08B9 /* AppDelegate.swift in Sources */,
+				4CEA5A712AD3D7E000CA97BC /* TimeDecoder.swift in Sources */,
 				4C8A2EA52AC1E8F8001A08B9 /* NetworkService.swift in Sources */,
 				4C8A2E932AC1E417001A08B9 /* SceneDelegate.swift in Sources */,
 				4CCE0B1B2AC9136F00F286E2 /* UIImage+Conevnience.swift in Sources */,

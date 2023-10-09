@@ -11,12 +11,12 @@ class ViewController: UIViewController {
     
     let presenter = NewsPresenter()
     let mainTableView = UITableView()
-    let fetchDataButton = UIButton()
+    let activityIndicatorView = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupButton()
         setupTableView()
+        setupActivityIndicator()
         presenter.delegate = self
         presenter.fetchLatestNews()
     }
@@ -28,6 +28,18 @@ class ViewController: UIViewController {
 
 // MARK: - Layout
 extension ViewController {
+    private func setupActivityIndicator() {
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+        activityIndicatorView.hidesWhenStopped = true
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
     private func setupTableView() {
         view.addSubview(mainTableView)
         setupTableViewLayout()
@@ -36,50 +48,22 @@ extension ViewController {
         mainTableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
     }
     
-    private func setupButton() {
-        view.addSubview(fetchDataButton)
-        setupFetchButtonLayout()
-        fetchDataButton.addTarget(self, action: #selector(fetchData), for: .touchUpInside)
-    }
-    
     private func setupTableViewLayout() {
         let safeArea = view.safeAreaLayoutGuide
         mainTableView.translatesAutoresizingMaskIntoConstraints = false
         mainTableView.separatorStyle = .none
-        mainTableView.backgroundColor = UIColor.tableViewBackgroundColor
         NSLayoutConstraint.activate([
-            mainTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 0),
-            mainTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: 0),
-            mainTableView.topAnchor.constraint(equalTo: safeArea.topAnchor,         constant: 10),
-            mainTableView.bottomAnchor.constraint(equalTo: fetchDataButton.topAnchor, constant: -20)
-        ])
-    }
-    
-    private func setupFetchButtonLayout() {
-        let borderColor = UIColor(red: 109 / 255, green: 190 / 255, blue: 90 / 255, alpha: 1)
-        fetchDataButton.layer.cornerRadius = 25
-        fetchDataButton.layer.borderWidth = 1.5
-        fetchDataButton.layer.borderColor = borderColor.cgColor
-        
-        fetchDataButton.setTitle("Fetch news", for: .normal)
-        fetchDataButton.setTitleColor(.black, for: .normal)
-        fetchDataButton.setTitleColor(.black.withAlphaComponent(0.2), for: .highlighted)
-        
-        // Constraints
-        let safeArea = view.safeAreaLayoutGuide
-        fetchDataButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            fetchDataButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
-            fetchDataButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
-            fetchDataButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            fetchDataButton.heightAnchor.constraint(equalToConstant: 50)
+            mainTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            mainTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            mainTableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            mainTableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
         ])
     }
 }
 
-extension ViewController: UITableViewDataSource , UITableViewDelegate{
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return presenter.presentedNews.count
+        return presenter.cellCount
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,10 +74,12 @@ extension ViewController: UITableViewDataSource , UITableViewDelegate{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
         else { fatalError() }
         
-        let model = presenter.presentedNews[indexPath.section + indexPath.row]
+        let cellIndex = indexPath.section + indexPath.row
+        let model = presenter.getCell(at: cellIndex)
         
         cell.setup(from: model)
         cell.selectionStyle = .none
+        
         return cell
     }
     
@@ -110,6 +96,8 @@ extension ViewController: UITableViewDataSource , UITableViewDelegate{
 
 extension ViewController: NewsPresenterDelegate {
     func newsWereUpdated() {
+        activityIndicatorView.stopAnimating()
+        mainTableView.backgroundColor = UIColor.tableViewBackgroundColor
         mainTableView.reloadData()
     }
 }
