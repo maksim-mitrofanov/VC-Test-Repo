@@ -19,7 +19,7 @@ class VCTableViewCell: UITableViewCell {
     let showMoreOptionsButton = UIButton()
     let articleTitleLabel = UILabel()
     let articleBodyLabel = UILabel()
-    let articleImage = UIImageView()
+    let articleImageView = UIImageView()
     let leaveCommentButton = UIButton()
     let commentsCountLabel = UILabel()
     let repostArticleButton = UIButton()
@@ -52,7 +52,7 @@ class VCTableViewCell: UITableViewCell {
         setupFeedbackControlsStackView()
     }
 
-    func setup(from model: VCCellModel, subsiteAvatarData: Data?) {
+    func setup(from model: VCCellModel) {
         subsiteNameLabel.text = model.subsiteName
         timeSincePublishedLabel.text = model.timeSincePublished
         articleTitleLabel.text = model.title
@@ -61,8 +61,12 @@ class VCTableViewCell: UITableViewCell {
         repostsCountLabel.text = model.repostsCount.description
         totalVotesCountLabel.text = model.votes.description
         
-        if let subsiteAvatarData {
+        if let subsiteAvatarData = model.subsiteImageData {
             subsiteImageView.image = UIImage(data: subsiteAvatarData)
+        }
+        
+        if let articleImageData = model.articleImageData {
+            articleImageView.image = UIImage(data: articleImageData)
         }
     }
     
@@ -131,16 +135,16 @@ private extension VCTableViewCell {
     
     
     func setupArticleImage() {
-        articleImage.backgroundColor = .black
+        articleImageView.backgroundColor = .black
         
-        contentView.addSubview(articleImage)
-        articleImage.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(articleImageView)
+        articleImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            articleImage.heightAnchor.constraint(equalToConstant: 210),
-            articleImage.topAnchor.constraint(equalTo: titleAndBodyStackView.bottomAnchor, constant: 16),
-            articleImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            articleImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            articleImageView.heightAnchor.constraint(equalToConstant: 210),
+            articleImageView.topAnchor.constraint(equalTo: titleAndBodyStackView.bottomAnchor, constant: 16),
+            articleImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            articleImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
     
@@ -199,7 +203,7 @@ private extension VCTableViewCell {
         feedbackControlsStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            feedbackControlsStackView.topAnchor.constraint(equalTo: articleImage.bottomAnchor, constant: 16),
+            feedbackControlsStackView.topAnchor.constraint(equalTo: articleImageView.bottomAnchor, constant: 16),
             feedbackControlsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             feedbackControlsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             feedbackControlsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)

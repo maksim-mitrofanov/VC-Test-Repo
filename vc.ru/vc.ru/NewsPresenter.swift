@@ -28,14 +28,17 @@ final class NewsPresenter: NetworkServiceDelegate {
     }
     
     func receiveNews(data: ServerFeedback?) {
-        let decodedNews = data?.result.news.map(convert(newsModel:))
-        presentedNews.append(contentsOf: decodedNews ?? [])
+        if let news = data?.result.news {
+            appendToPresentedNews(models: news)
+        }
         
         DispatchQueue.main.async {
             self.delegate?.newsWereUpdated()
         }
     }
-    
+}
+
+private extension NewsPresenter {
     func getSubsiteAvatar(uuid: String) -> Data? {
         var avatarData: Data? = nil
         
@@ -55,27 +58,33 @@ final class NewsPresenter: NetworkServiceDelegate {
         
         return avatarData
     }
-}
-
-private extension NewsPresenter {
-    func convert(newsModel: ServerFeedback.NewsBlock) -> VCCellModel {
-        let model = VCCellModel(
-            subsiteImageUUID: newsModel.subsite.avatar.data.uuid,
-            subsiteName: newsModel.subsite.name,
-            timeSincePublished: decode(unixTime: newsModel.date),
-            title: newsModel.title,
-            bodyText: "Error",
-            mainImageUUID: "nil",
-            commentsCount: newsModel.counters.comments,
-            repostsCount: newsModel.counters.reposts,
-            votes: newsModel.likes.summ,
-            id: newsModel.id
-        )
-        
-        return model
+    
+    func appendToPresentedNews(models: [ServerFeedback.NewsEntry]) {
+        models.forEach { model in
+            DispatchQueue.main.async {
+                let avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
+                let articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
+                let articleSubtitle = model.getArticleSubtitle()
+                
+                let model = VCCellModel(
+                    subsiteImageData: avatarImageData,
+                    subsiteName: model.subsite.name,
+                    articleImageData: articleImageData,
+                    timeSincePublished: NewsPresenter.decode(unixTime: model.date),
+                    title: model.title,
+                    bodyText: articleSubtitle,
+                    commentsCount: model.counters.comments,
+                    repostsCount: model.counters.reposts,
+                    votes: model.likes.summ,
+                    id: model.id
+                )
+                
+                self.presentedNews.append(model)
+            }
+        }
     }
     
-    func decode(unixTime: Int) -> String {
+    static func decode(unixTime: Int) -> String {
         let secondsFromGMT: Int = TimeZone.current.secondsFromGMT()
         let receivedDateInCurrentTimeZone = Date(timeIntervalSince1970: TimeInterval(unixTime + secondsFromGMT))
         let currentDateInCurrentTimeZone = Date().addingTimeInterval(TimeInterval(secondsFromGMT))

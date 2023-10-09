@@ -91,9 +91,8 @@ extension ViewController: UITableViewDataSource , UITableViewDelegate{
         else { fatalError() }
         
         let model = presenter.presentedNews[indexPath.section + indexPath.row]
-        let subsiteImageData = presenter.getSubsiteAvatar(uuid: model.subsiteImageUUID)
         
-        cell.setup(from: model, subsiteAvatarData: subsiteImageData)
+        cell.setup(from: model)
         cell.selectionStyle = .none
         return cell
     }
