@@ -11,6 +11,7 @@ struct VCCellModel: Identifiable {
     let subsiteImageData: Data?
     let subsiteName: String
     let articleImageData: Data?
+    let articleImageType: String
     let timeSincePublished: String
     let title: String
     let bodyText: String

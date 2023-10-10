@@ -85,6 +85,7 @@ extension ServerFeedback {
     
     struct MediaBlockImageData: Decodable {
         let uuid: String
+        let type: String
     }
 }
 
@@ -128,6 +129,29 @@ extension ServerFeedback.NewsEntry {
             switch mediaBlock {
             case .media(let media):
                 result = media.data.items[0].image.data.uuid
+            default:
+                break
+            }
+        }
+        
+        return result
+    }
+    
+    func getArticleImageType() -> String {
+        var result = ""
+        
+        let firstMediaBlock = blocks.first { block in
+            if case .media(_) = block {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        if let mediaBlock = firstMediaBlock {
+            switch mediaBlock {
+            case .media(let media):
+                result = media.data.items[0].image.data.type
             default:
                 break
             }

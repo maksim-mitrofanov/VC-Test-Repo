@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "logo-vc-ru.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

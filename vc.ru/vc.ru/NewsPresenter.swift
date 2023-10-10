@@ -19,21 +19,17 @@ protocol NewsPresenterDelegate {
 final class NewsPresenter: NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
     private var presentedNews = [VCCellModel]()
+    private var lastElementID: Int? = nil
     var delegate: NewsPresenterDelegate?
     
     func fetchLatestNews() {
         NetworkService.shared.presenter = self
-        let lastID = presentedNews.last?.id
-        NetworkService.shared.fetchNews(lastId: lastID)
+        NetworkService.shared.fetchNews(lastId: lastElementID)
     }
     
     func receiveNews(data: ServerFeedback?) {
         if let news = data?.result.news {
             appendToPresentedNews(models: news)
-        }
-        
-        DispatchQueue.main.async {
-            self.delegate?.newsWereUpdated()
         }
     }
     
@@ -71,10 +67,16 @@ private extension NewsPresenter {
     }
     
     func appendToPresentedNews(models: [ServerFeedback.NewsEntry]) {
+        lastElementID = models.last?.id
+        
         models.forEach { model in
-            DispatchQueue.main.async {
-                let avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
-                let articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
+            var avatarImageData: Data? = Data()
+            var articleImageData: Data? = Data()
+            
+            DispatchQueue.global(qos: .userInteractive).async {
+                avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
+                articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
+                
                 let articleSubtitle = model.getArticleSubtitle()
                 let timeDescription = TimeDecoder.getDescriptionFor(unixTime: model.date)
                 
@@ -82,6 +84,7 @@ private extension NewsPresenter {
                     subsiteImageData: avatarImageData,
                     subsiteName: model.subsite.name,
                     articleImageData: articleImageData,
+                    articleImageType: model.getArticleImageType(),
                     timeSincePublished: timeDescription,
                     title: model.title,
                     bodyText: articleSubtitle,
@@ -92,6 +95,10 @@ private extension NewsPresenter {
                 )
                 
                 self.presentedNews.append(model)
+                
+                DispatchQueue.main.async {
+                    self.delegate?.newsWereUpdated()
+                }
             }
         }
     }

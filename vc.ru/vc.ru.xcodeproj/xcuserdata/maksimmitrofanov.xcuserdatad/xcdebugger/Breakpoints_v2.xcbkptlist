@@ -5,22 +5,6 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "174A35E9-7D75-4743-8E74-8CBE75656350"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "vc.ru/NetworkService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "decode(data:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
             uuid = "99AB3375-10A0-490C-9980-28A5F362EEA8"
@@ -49,22 +33,22 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5D059321-8528-4910-9AA1-8A3FFCADFA5B"
-            shouldBeEnabled = "No"
+            uuid = "CFDEF7D0-3A19-4583-8801-23480FC31E18"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
-            continueAfterRunningActions = "Yes"
+            continueAfterRunningActions = "No"
             filePath = "vc.ru/NetworkService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "fetchAsset(uuid:completion:)"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "decode(data:)"
             landmarkType = "7">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
                   <ActionContent
-                     message = "&quot;Fetch assets called!&quot;"
+                     message = "Found error while decoding serever feedback"
                      conveyanceType = "0">
                   </ActionContent>
                </BreakpointActionProxy>
@@ -74,7 +58,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "760CA2CC-6CE0-4375-B0D2-15F8A0B9DE79"
+            uuid = "EE6AEAA7-1B7D-4005-8372-F4E5CF2C0329"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"

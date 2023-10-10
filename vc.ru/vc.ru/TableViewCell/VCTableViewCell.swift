@@ -66,7 +66,12 @@ class VCTableViewCell: UITableViewCell {
         }
         
         if let articleImageData = model.articleImageData {
-            articleImageView.image = UIImage(data: articleImageData)
+            if model.articleImageType.lowercased() == "gif" {
+                articleImageView.image = UIImage(named: "gif_placeholder")
+                
+            } else {
+                articleImageView.image = UIImage(data: articleImageData)
+            }
         }
     }
     

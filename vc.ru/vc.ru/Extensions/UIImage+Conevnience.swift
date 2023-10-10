@@ -36,7 +36,3 @@ extension UIImage {
         return scaledImage
     }
 }
-
-#Preview {
-    ViewController()
-}
