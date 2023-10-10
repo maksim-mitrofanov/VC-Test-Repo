@@ -94,7 +94,18 @@ private extension NewsPresenter {
                     id: model.id
                 )
                 
-                self.presentedNews.append(model)
+                #warning("Has to be fixed!")
+                /*
+                 When fetching content, I use model.last.id, that is later used in the NetworkService call.
+                 For some reason, the data that I get back from the server may be a duplicate of the data
+                 that is already present in the presented news array.
+                 
+                 The below if statement is a temporary fix for this bug
+                 However, it should be investigated further on.
+                 */
+                if !self.presentedNews.contains(where: { $0.id == model.id }) {
+                    self.presentedNews.append(model)
+                }
                 
                 DispatchQueue.main.async {
                     self.delegate?.newsWereUpdated()

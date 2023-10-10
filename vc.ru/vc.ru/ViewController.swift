@@ -49,14 +49,13 @@ extension ViewController {
     }
     
     private func setupTableViewLayout() {
-        let safeArea = view.safeAreaLayoutGuide
         mainTableView.translatesAutoresizingMaskIntoConstraints = false
         mainTableView.separatorStyle = .none
         NSLayoutConstraint.activate([
-            mainTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            mainTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            mainTableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            mainTableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            mainTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mainTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mainTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }
