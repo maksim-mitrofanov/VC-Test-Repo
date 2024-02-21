@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        setupActivityIndicator()
+//        setupActivityIndicator()
         presenter.delegate = self
         presenter.fetchLatestNews()
     }
@@ -41,6 +41,7 @@ extension ViewController {
     }
     
     private func setupTableView() {
+        mainTableView.accessibilityIdentifier = GlobalNameSpace.homeScreenTableView.rawValue
         view.addSubview(mainTableView)
         setupTableViewLayout()
         mainTableView.dataSource = self
@@ -49,6 +50,7 @@ extension ViewController {
     }
     
     private func setupTableViewLayout() {
+        mainTableView.backgroundColor = UIColor.clear
         mainTableView.translatesAutoresizingMaskIntoConstraints = false
         mainTableView.separatorStyle = .none
         NSLayoutConstraint.activate([
@@ -61,12 +63,8 @@ extension ViewController {
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return presenter.cellCount
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return presenter.cellCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -78,25 +76,13 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.setup(from: model)
         cell.selectionStyle = .none
-        
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView()
-        footerView.backgroundColor = UIColor.clear
-        return footerView
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(0)
     }
 }
 
 extension ViewController: NewsPresenterDelegate {
     func newsWereUpdated() {
         activityIndicatorView.stopAnimating()
-        mainTableView.backgroundColor = UIColor.tableViewBackgroundColor
         mainTableView.reloadData()
     }
 }

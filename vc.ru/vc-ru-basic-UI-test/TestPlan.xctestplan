@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "DD00078D-BEF7-4D23-9A4D-FFA96382B439",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:vc.ru.xcodeproj",
+        "identifier" : "4CC3E7142B825FC400F63552",
+        "name" : "vc-ru-basic-UI-test"
+      }
+    }
+  ],
+  "version" : 1
+}

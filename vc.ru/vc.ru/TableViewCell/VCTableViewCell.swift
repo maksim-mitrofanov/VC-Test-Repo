@@ -9,9 +9,7 @@ import UIKit
 import Foundation
 
 class VCTableViewCell: UITableViewCell {
-    static let id = "VCTableViewCell"
-    static var initCallCount = 0
-    static var setupCallCount = 0
+    static let id = GlobalNameSpace.homeScreenTableViewCell.rawValue
     
     let subsiteImageView = UIImageView()
     let subsiteNameLabel = UILabel()
@@ -34,9 +32,6 @@ class VCTableViewCell: UITableViewCell {
     let feedbackControlsStackView = UIStackView()
     
     let iconTargetSize = CGSize(width: 22, height: 22)
-    let text3MediumFont = UIFont(name: "Roboto-Medium", size: 15)
-    let text3RegularFont = UIFont(name: "Roboto-Regular", size: 15)
-    let headerFont =  UIFont(name: "Roboto-Medium", size: 22)
             
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,6 +48,7 @@ class VCTableViewCell: UITableViewCell {
     }
 
     func setup(from model: VCCellModel) {
+        contentView.backgroundColor = UIColor.white
         subsiteNameLabel.text = model.subsiteName
         timeSincePublishedLabel.text = model.timeSincePublished
         articleTitleLabel.text = model.title
@@ -99,13 +95,13 @@ private extension VCTableViewCell {
     }
     
     func styleArticleTitleLabel() {
-        articleTitleLabel.font = headerFont
+        articleTitleLabel.font = .header1
         articleTitleLabel.textColor = .black
         articleTitleLabel.numberOfLines = 0
     }
     
     func styleArticleBodyLabel()  {
-        articleBodyLabel.font = text3RegularFont
+        articleBodyLabel.font = .body3Reg
         articleBodyLabel.textColor = .black
         articleBodyLabel.numberOfLines = 0
     }
@@ -113,7 +109,7 @@ private extension VCTableViewCell {
     func styleSubsiteNameLabel() {
         subsiteNameLabel.textColor = .black
         subsiteNameLabel.numberOfLines = 0
-        subsiteNameLabel.font = text3MediumFont
+        subsiteNameLabel.font = .body3Med
     }
     
     func styleSubsiteImage() {
@@ -128,7 +124,7 @@ private extension VCTableViewCell {
     }
     
     func stylePublishedTimeLabel() {
-        timeSincePublishedLabel.font = text3RegularFont
+        timeSincePublishedLabel.font = .body3Reg
         timeSincePublishedLabel.textColor = .darkGray
     }
     
@@ -210,8 +206,19 @@ private extension VCTableViewCell {
         NSLayoutConstraint.activate([
             feedbackControlsStackView.topAnchor.constraint(equalTo: articleImageView.bottomAnchor, constant: 16),
             feedbackControlsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            feedbackControlsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            feedbackControlsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            feedbackControlsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+        ])
+        
+        let footerView = getCellFooterView()
+        contentView.addSubview(footerView)
+        
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            footerView.topAnchor.constraint(equalTo: feedbackControlsStackView.bottomAnchor, constant: 16),
+            footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            footerView.heightAnchor.constraint(equalToConstant: 20),
+            footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
     }
     
@@ -232,7 +239,7 @@ private extension VCTableViewCell {
         voteUpButton.tintColor = .customSecondaryGray
         
         totalVotesCountLabel.textColor = .customSecondaryGray
-        totalVotesCountLabel.font = text3MediumFont
+        totalVotesCountLabel.font = .body3Med
         
         votesStackView.addArrangedSubview(voteDownButton)
         votesStackView.addArrangedSubview(totalVotesCountLabel)
@@ -263,7 +270,7 @@ private extension VCTableViewCell {
         repostsCountButton.setImage(resizedImage, for: .normal)
         repostsCountButton.tintColor = .customSecondaryGray
         
-        repostsCountLabel.font = text3MediumFont
+        repostsCountLabel.font = .body3Med
         repostsCountLabel.textColor = .customSecondaryGray
         
         repostsStackView.addArrangedSubview(repostsCountButton)
@@ -290,6 +297,12 @@ private extension VCTableViewCell {
         commentsStackView.addArrangedSubview(commentsCountLabel)
         
         return commentsStackView
+    }
+    
+    func getCellFooterView() -> UIView {
+        let footerView = UIView()
+        footerView.backgroundColor = .lightGray.withAlphaComponent(0.1)
+        return footerView
     }
 }
 
