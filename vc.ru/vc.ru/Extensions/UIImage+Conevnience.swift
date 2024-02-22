@@ -35,4 +35,31 @@ extension UIImage {
         
         return scaledImage
     }
+    
+    convenience init?(data: Data?, placeholder: UIImagePlaceholderName) {
+        if let data {
+            self.init(data: data)
+        } else {
+            self.init(named: placeholder.description)
+        }
+    }
+    
+    convenience init?(placeholder: UIImagePlaceholderName) {
+        self.init(named: placeholder.description)
+    }
+    
+    
+    enum UIImagePlaceholderName {
+        case gif
+        case static_image
+        
+        var description: String {
+            switch self {
+            case .gif:
+                return "gif_placeholder"
+            case .static_image:
+                return "static_image_placeholder"
+            }
+        }
+    }
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 public enum GlobalNameSpace: String {
-    case homeScreenTableView = "homeScreenTableView"
-    case homeScreenTableViewCell = "VCTableViewCell"
+    case vcHomeScreenTableView = "homeScreenTableView"
+    case vcHomeScreenTableViewCell = "VCTableViewCell"
+    case vcImageView = "vcImageView"
 }

@@ -6,11 +6,12 @@
 //
 
 import UIKit
-import Foundation
 
 class VCTableViewCell: UITableViewCell {
-    static let id = GlobalNameSpace.homeScreenTableViewCell.rawValue
+    static let id = GlobalNameSpace.vcHomeScreenTableViewCell.rawValue
+    var imageWasTapped: (() -> Void)?
     
+    // Views
     let subsiteImageView = UIImageView()
     let subsiteNameLabel = UILabel()
     let timeSincePublishedLabel = UILabel()
@@ -27,11 +28,15 @@ class VCTableViewCell: UITableViewCell {
     let voteDownButton = UIButton()
     let totalVotesCountLabel = UILabel()
     
+    // StackViews
     let topStackView = UIStackView()
     let titleAndBodyStackView = UIStackView()
     let feedbackControlsStackView = UIStackView()
     
     let iconTargetSize = CGSize(width: 22, height: 22)
+    
+    // Storage
+    private(set) var dataModel: VCCellModel? = nil
             
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,28 +50,32 @@ class VCTableViewCell: UITableViewCell {
         setupArticleTitleAndSubtitle()
         setupArticleImage()
         setupFeedbackControlsStackView()
+        contentView.backgroundColor = UIColor.white
     }
 
     func setup(from model: VCCellModel) {
-        contentView.backgroundColor = UIColor.white
-        subsiteNameLabel.text = model.subsiteName
-        timeSincePublishedLabel.text = model.timeSincePublished
-        articleTitleLabel.text = model.title
-        articleBodyLabel.text = model.bodyText
-        commentsCountLabel.text = model.commentsCount.description
-        repostsCountLabel.text = model.repostsCount.description
-        totalVotesCountLabel.text = model.votes.description
-        
-        if let subsiteAvatarData = model.subsiteImageData {
-            subsiteImageView.image = UIImage(data: subsiteAvatarData)
-        }
-        
-        if let articleImageData = model.articleImageData {
+        dataModel = model
+        updateWithNewDataModel()
+    }
+    
+    private func updateWithNewDataModel() {
+        if let model = dataModel {
+            subsiteNameLabel.text = model.subsiteName
+            timeSincePublishedLabel.text = model.timeSincePublished
+            articleTitleLabel.text = model.title
+            articleBodyLabel.text = model.bodyText
+            commentsCountLabel.text = model.commentsCount.description
+            repostsCountLabel.text = model.repostsCount.description
+            totalVotesCountLabel.text = model.votes.description
+            
+            if let subsiteAvatarData = model.subsiteImageData {
+                subsiteImageView.image = UIImage(data: subsiteAvatarData)
+            }
+            
             if model.articleImageType.lowercased() == "gif" {
-                articleImageView.image = UIImage(named: "gif_placeholder")
-                
+                articleImageView.image = UIImage(placeholder: .gif)
             } else {
-                articleImageView.image = UIImage(data: articleImageData)
+                articleImageView.image = UIImage(data: model.articleImageData, placeholder: .static_image)
             }
         }
     }
@@ -136,7 +145,9 @@ private extension VCTableViewCell {
     
     
     func setupArticleImage() {
+        setupArticleImageTapGesture()
         articleImageView.backgroundColor = .black
+        articleImageView.accessibilityIdentifier = GlobalNameSpace.vcImageView.rawValue
         
         contentView.addSubview(articleImageView)
         articleImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -147,6 +158,16 @@ private extension VCTableViewCell {
             articleImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             articleImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
+    }
+    
+    func setupArticleImageTapGesture() {
+        articleImageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        articleImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func imageTapped() {
+        imageWasTapped?()
     }
     
     func setupTopStackView() {
@@ -304,8 +325,4 @@ private extension VCTableViewCell {
         footerView.backgroundColor = .lightGray.withAlphaComponent(0.1)
         return footerView
     }
-}
-
-#Preview {
-    ViewController()
 }

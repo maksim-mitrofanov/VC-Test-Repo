@@ -12,7 +12,7 @@ protocol NetworkServiceDelegate: AnyObject {
     func receiveNews(data: ServerFeedback?)
 }
 
-protocol NewsPresenterDelegate {
+protocol NewsPresenterDelegate: AnyObject {
     func newsWereUpdated()
 }
 
@@ -20,7 +20,7 @@ final class NewsPresenter: NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
     private var presentedNews = [VCCellModel]()
     private var lastElementID: Int? = nil
-    var delegate: NewsPresenterDelegate?
+    weak var delegate: NewsPresenterDelegate?
     
     func fetchLatestNews() {
         NetworkService.shared.presenter = self

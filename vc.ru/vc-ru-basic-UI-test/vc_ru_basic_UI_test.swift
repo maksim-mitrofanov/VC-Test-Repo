@@ -15,11 +15,25 @@ final class vc_ru_basic_UI_test: XCTestCase {
         app.launch()
 
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let _ = XCTWaiter.wait(for: [expectation(description: "Wait for 5 seconds")], timeout: 1.0)
-        app.swipeUp()
-        let _ = XCTWaiter.wait(for: [expectation(description: "Wait for 5 seconds")], timeout: 1.0)
-        app.swipeUp()
-        let _ = XCTWaiter.wait(for: [expectation(description: "Wait for 5 seconds")], timeout: 1.0)
-        app.swipeUp()
+        wait(seconds: 1)
+        
+        let mainTableView = app.tables[GlobalNameSpace.vcHomeScreenTableView.rawValue]
+        XCTAssertTrue(mainTableView.exists, "The table view exists on the home screen.")
+        
+        wait(seconds: 1)
+        let firstCell = mainTableView.cells.element(boundBy: 0)
+        XCTAssertTrue(firstCell.exists, "The first cell in the table view exists")
+        
+        let imageView = firstCell.images[GlobalNameSpace.vcImageView.rawValue]
+        XCTAssertTrue(imageView.exists, "The image view inside the first cell exists")
+        
+        imageView.tap()
+        
+    }
+}
+
+extension XCTestCase {
+    func wait(seconds: Double) {
+        let _ = XCTWaiter.wait(for: [expectation(description: "")], timeout: seconds)
     }
 }

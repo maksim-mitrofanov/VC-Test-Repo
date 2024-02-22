@@ -8,15 +8,13 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
     let presenter = NewsPresenter()
     let mainTableView = UITableView()
-    let activityIndicatorView = UIActivityIndicatorView()
+    let imagePreviewTransitionDelegate = ImagePreviewTransitionDelegate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-//        setupActivityIndicator()
         presenter.delegate = self
         presenter.fetchLatestNews()
     }
@@ -28,20 +26,8 @@ class ViewController: UIViewController {
 
 // MARK: - Layout
 extension ViewController {
-    private func setupActivityIndicator() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.startAnimating()
-        activityIndicatorView.hidesWhenStopped = true
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
-    
     private func setupTableView() {
-        mainTableView.accessibilityIdentifier = GlobalNameSpace.homeScreenTableView.rawValue
+        mainTableView.accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
         view.addSubview(mainTableView)
         setupTableViewLayout()
         mainTableView.dataSource = self
@@ -68,25 +54,42 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
+        guard let presentedCell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
         else { fatalError() }
         
         let cellIndex = indexPath.section + indexPath.row
         let model = presenter.getCell(at: cellIndex)
         
-        cell.setup(from: model)
-        cell.selectionStyle = .none
-        return cell
+        presentedCell.setup(from: model)
+        presentedCell.selectionStyle = .none
+        presentedCell.imageWasTapped = { [weak self] in
+            if let cell = tableView.cellForRow(at: indexPath) as? VCTableViewCell {
+                let originFrame = tableView.convert(cell.articleImageView.frame, to: nil)
+                self?.presentImagePreviewController(withImage: cell.dataModel?.articleImageData, fromFrame: originFrame)
+            }
+        }
+        
+        
+        return presentedCell
+    }
+}
+
+extension ViewController {
+    func presentImagePreviewController(withImage imageData: Data?, fromFrame frame: CGRect) {
+        let previewController = ImagePreviewViewController()
+        previewController.setImageData(to: imageData)
+        previewController.modalPresentationStyle = .custom
+        
+        let transitionDelegate = ImagePreviewTransitionDelegate()
+        transitionDelegate.originFrame = frame
+        previewController.transitioningDelegate = transitionDelegate
+        
+        present(previewController, animated: true, completion: nil)
     }
 }
 
 extension ViewController: NewsPresenterDelegate {
     func newsWereUpdated() {
-        activityIndicatorView.stopAnimating()
         mainTableView.reloadData()
     }
-}
-
-#Preview {
-    ViewController()
 }
