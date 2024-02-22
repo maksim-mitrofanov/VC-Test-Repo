@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImagePreviewViewController: UIViewController, UIScrollViewDelegate {
+final class ImagePreviewViewController: UIViewController, UIScrollViewDelegate {
     var imageView: UIImageView!
     var scrollView: UIScrollView!
     private var imageData: Data? = nil

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeScreenViewController: UIViewController {
+final class HomeScreenViewController: UIViewController {
     // Must be an injected properties
     let presenter = NewsPresenter()
         
