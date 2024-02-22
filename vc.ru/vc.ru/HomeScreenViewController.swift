@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeScreenViewController.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 25.09.2023.
@@ -7,38 +7,56 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeScreenViewController: UIViewController {
+    // Must be an injected properties
     let presenter = NewsPresenter()
-    let mainTableView = UITableView()
-    let imagePreviewTransitionDelegate = ImagePreviewTransitionDelegate()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
+        setupTableViewLayout()
         presenter.delegate = self
         presenter.fetchLatestNews()
     }
     
+    lazy private var mainTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
+        tableView.accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
+        return tableView
+    }()
+    
+    lazy private var imagePreviewTransitionDelegate: ImagePreviewTransitionDelegate = {
+        let transitionDelegate = ImagePreviewTransitionDelegate()
+        return transitionDelegate
+    }()
+    
     @objc private func fetchData() {
         presenter.fetchLatestNews()
     }
+    
+    func presentImagePreviewController(withImage imageData: Data?, fromFrame frame: CGRect) {
+        let previewController = ImagePreviewViewController()
+        previewController.setImageData(to: imageData)
+        previewController.modalPresentationStyle = .custom
+        
+        let transitionDelegate = ImagePreviewTransitionDelegate()
+        transitionDelegate.originFrame = frame
+        previewController.transitioningDelegate = transitionDelegate
+        
+        present(previewController, animated: true, completion: nil)
+    }
 }
 
-// MARK: - Layout
-extension ViewController {
-    private func setupTableView() {
-        mainTableView.accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
-        view.addSubview(mainTableView)
-        setupTableViewLayout()
-        mainTableView.dataSource = self
-        mainTableView.delegate = self
-        mainTableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
-    }
-    
+// MARK: - Table View
+extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     private func setupTableViewLayout() {
-        mainTableView.backgroundColor = UIColor.clear
-        mainTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mainTableView)
         mainTableView.separatorStyle = .none
+        mainTableView.backgroundColor = UIColor.clear
+        
+        mainTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             mainTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mainTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -46,9 +64,7 @@ extension ViewController {
             mainTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-}
-
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.cellCount
     }
@@ -69,26 +85,12 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
         
-        
         return presentedCell
     }
 }
 
-extension ViewController {
-    func presentImagePreviewController(withImage imageData: Data?, fromFrame frame: CGRect) {
-        let previewController = ImagePreviewViewController()
-        previewController.setImageData(to: imageData)
-        previewController.modalPresentationStyle = .custom
-        
-        let transitionDelegate = ImagePreviewTransitionDelegate()
-        transitionDelegate.originFrame = frame
-        previewController.transitioningDelegate = transitionDelegate
-        
-        present(previewController, animated: true, completion: nil)
-    }
-}
-
-extension ViewController: NewsPresenterDelegate {
+// NewsPresenterDelegate
+extension HomeScreenViewController: NewsPresenterDelegate {
     func newsWereUpdated() {
         mainTableView.reloadData()
     }
