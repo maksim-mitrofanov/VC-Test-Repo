@@ -10,20 +10,22 @@ import UIKit
 final class HomeScreenViewController: UIViewController {
     // Must be an injected properties
     let presenter = NewsPresenter()
+    
+    //Properties
+    private let accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableViewLayout()
         presenter.delegate = self
-        presenter.fetchLatestNews()
+        setupTapGestureRecognizer()
     }
     
     lazy private var mainTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
-        tableView.accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
+        tableView.accessibilityIdentifier = accessibilityIdentifier
+        tableView.register(VCTableViewCellEager.self, forCellReuseIdentifier: VCTableViewCellEager.id)
         return tableView
     }()
     
@@ -31,10 +33,6 @@ final class HomeScreenViewController: UIViewController {
         let transitionDelegate = ImagePreviewTransitionDelegate()
         return transitionDelegate
     }()
-    
-    @objc private func fetchData() {
-        presenter.fetchLatestNews()
-    }
     
     func presentImagePreviewController(withImage imageData: Data?, fromFrame frame: CGRect) {
         let previewController = ImagePreviewViewController()
@@ -47,10 +45,25 @@ final class HomeScreenViewController: UIViewController {
         
         present(previewController, animated: true, completion: nil)
     }
+    
+    func loadAndShowData() {
+        setupTableViewLayout()
+        presenter.fetchLatestNews()
+    }
 }
 
 // MARK: - Table View
 extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
+    private func setupTapGestureRecognizer() {
+        view.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onSingleTapGesture))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func onSingleTapGesture() {
+        loadAndShowData()
+    }
+    
     private func setupTableViewLayout() {
         view.addSubview(mainTableView)
         mainTableView.separatorStyle = .none
@@ -70,7 +83,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let presentedCell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
+        guard let presentedCell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCellEager.id, for: indexPath) as? VCTableViewCellEager
         else { fatalError() }
         
         let cellIndex = indexPath.section + indexPath.row
@@ -78,12 +91,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
         
         presentedCell.setup(from: model)
         presentedCell.selectionStyle = .none
-        presentedCell.imageWasTapped = { [weak self] in
-            if let cell = tableView.cellForRow(at: indexPath) as? VCTableViewCell {
-                let originFrame = tableView.convert(cell.articleImageView.frame, to: nil)
-                self?.presentImagePreviewController(withImage: cell.dataModel?.articleImageData, fromFrame: originFrame)
-            }
-        }
+        presentedCell.imageWasTapped = { }
         
         return presentedCell
     }

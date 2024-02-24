@@ -14,13 +14,14 @@ final class vc_ru_basic_UI_test: XCTestCase {
         app.launch()
         
         wait(seconds: 1)
-       
+        
+        app.tap()
+        
+        wait(seconds: 1)
         let mainTableView = app.tables[GlobalNameSpace.vcHomeScreenTableView.rawValue]
         XCTAssertTrue(mainTableView.exists, "The table view exists on the home screen.")
 
-        for _ in 0...10 {
-            app.customSwipeUp()
-        }
+        mainTableView.swipeUp()
     }
 
     func testExample() throws {
@@ -47,14 +48,5 @@ final class vc_ru_basic_UI_test: XCTestCase {
 extension XCTestCase {
     func wait(seconds: Double) {
         let _ = XCTWaiter.wait(for: [expectation(description: "")], timeout: seconds)
-    }
-}
-
-extension XCUIElement {
-    /// Performs a custom swipe up action.
-    func customSwipeUp() {
-        let startPoint = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
-        let endPoint = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.01))
-        startPoint.press(forDuration: 0.001, thenDragTo: endPoint, withVelocity: .fast, thenHoldForDuration: 0.001)
     }
 }
