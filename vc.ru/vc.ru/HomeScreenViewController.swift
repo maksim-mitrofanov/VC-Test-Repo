@@ -11,13 +11,16 @@ final class HomeScreenViewController: UIViewController {
     // Must be an injected properties
     let presenter = NewsPresenter()
     
+    // Animations
+    private var placeholderView: LoadingPlaceholderView? = nil
+    
     //Properties
     private let accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
         
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.delegate = self
-        setupTapGestureRecognizer()
+        loadAndShowData()
     }
     
     lazy private var mainTableView: UITableView = {
@@ -25,7 +28,7 @@ final class HomeScreenViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.accessibilityIdentifier = accessibilityIdentifier
-        tableView.register(VCTableViewCellEager.self, forCellReuseIdentifier: VCTableViewCellEager.id)
+        tableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
         return tableView
     }()
     
@@ -49,21 +52,14 @@ final class HomeScreenViewController: UIViewController {
     func loadAndShowData() {
         setupTableViewLayout()
         presenter.fetchLatestNews()
+        placeholderView = LoadingPlaceholderView()
+        placeholderView?.cover(mainTableView)
+        mainTableView.isUserInteractionEnabled = false
     }
 }
 
 // MARK: - Table View
-extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
-    private func setupTapGestureRecognizer() {
-        view.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onSingleTapGesture))
-        view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func onSingleTapGesture() {
-        loadAndShowData()
-    }
-    
+extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {    
     private func setupTableViewLayout() {
         view.addSubview(mainTableView)
         mainTableView.separatorStyle = .none
@@ -83,7 +79,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let presentedCell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCellEager.id, for: indexPath) as? VCTableViewCellEager
+        guard let presentedCell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
         else { fatalError() }
         
         let cellIndex = indexPath.section + indexPath.row
@@ -91,7 +87,6 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
         
         presentedCell.setup(from: model)
         presentedCell.selectionStyle = .none
-        presentedCell.imageWasTapped = { }
         
         return presentedCell
     }
@@ -100,6 +95,8 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
 // NewsPresenterDelegate
 extension HomeScreenViewController: NewsPresenterDelegate {
     func newsWereUpdated() {
+        placeholderView?.uncover(animated: true)
+        mainTableView.isUserInteractionEnabled = true
         mainTableView.reloadData()
     }
 }

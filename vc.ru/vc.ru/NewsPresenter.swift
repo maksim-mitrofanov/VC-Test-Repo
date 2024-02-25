@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Foundation
 
 protocol NetworkServiceDelegate: AnyObject {
     func receiveNews(data: ServerFeedback?)
@@ -43,6 +42,20 @@ final class NewsPresenter: NetworkServiceDelegate {
     var cellCount: Int {
         presentedNews.count
     }
+    
+    init() {
+        for _ in 0..<2 {
+            presentedNews.append(VCCellModel.empty)
+        }
+    }
+    
+    var firstEmptyCellIndex: Int? {
+        let index = presentedNews.firstIndex { model in
+            return model == VCCellModel.empty
+        }
+        
+        return index
+    }
 }
 
 private extension NewsPresenter {
@@ -72,8 +85,8 @@ private extension NewsPresenter {
         models.forEach { model in
             var avatarImageData: Data? = Data()
             var articleImageData: Data? = Data()
+            DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 2) {
             
-            DispatchQueue.global(qos: .userInteractive).async {
                 avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
                 articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
                 
@@ -104,7 +117,12 @@ private extension NewsPresenter {
                  However, it should be investigated further on.
                  */
                 if !self.presentedNews.contains(where: { $0.id == model.id }) {
-                    self.presentedNews.append(model)
+                    if let firstEmptyCellIndex = self.firstEmptyCellIndex {
+                        let value = firstEmptyCellIndex
+                        self.presentedNews[firstEmptyCellIndex] = model
+                    } else {
+                        self.presentedNews.append(model)
+                    }
                 }
                 
                 DispatchQueue.main.async {
