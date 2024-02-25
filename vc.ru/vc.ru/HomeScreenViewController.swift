@@ -17,7 +17,7 @@ final class HomeScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.delegate = self
-        setupTapGestureRecognizer()
+        loadAndShowData()
     }
     
     lazy private var mainTableView: UITableView = {
@@ -53,17 +53,7 @@ final class HomeScreenViewController: UIViewController {
 }
 
 // MARK: - Table View
-extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
-    private func setupTapGestureRecognizer() {
-        view.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onSingleTapGesture))
-        view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func onSingleTapGesture() {
-        loadAndShowData()
-    }
-    
+extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {    
     private func setupTableViewLayout() {
         view.addSubview(mainTableView)
         mainTableView.separatorStyle = .none

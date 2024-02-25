@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		4C2C35122B826908003BC7E2 /* GlobalNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2C35112B826908003BC7E2 /* GlobalNameSpace.swift */; };
 		4C39AC072B8A155A007673BB /* VCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C39AC062B8A155A007673BB /* VCTableViewCell.swift */; };
+		4C4FA33C2B8B6D84003D2D19 /* UIBezierPath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FA3382B8B6D84003D2D19 /* UIBezierPath+.swift */; };
+		4C4FA33D2B8B6D84003D2D19 /* LoadingPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FA3392B8B6D84003D2D19 /* LoadingPlaceholderView.swift */; };
+		4C4FA33E2B8B6D84003D2D19 /* Coverable+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FA33A2B8B6D84003D2D19 /* Coverable+UIKit.swift */; };
+		4C4FA33F2B8B6D84003D2D19 /* Coverable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FA33B2B8B6D84003D2D19 /* Coverable.swift */; };
 		4C8A2E912AC1E417001A08B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A2E902AC1E417001A08B9 /* AppDelegate.swift */; };
 		4C8A2E932AC1E417001A08B9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A2E922AC1E417001A08B9 /* SceneDelegate.swift */; };
 		4C8A2E952AC1E417001A08B9 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A2E942AC1E417001A08B9 /* HomeScreenViewController.swift */; };
@@ -55,6 +59,10 @@
 /* Begin PBXFileReference section */
 		4C2C35112B826908003BC7E2 /* GlobalNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalNameSpace.swift; sourceTree = "<group>"; };
 		4C39AC062B8A155A007673BB /* VCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCTableViewCell.swift; sourceTree = "<group>"; };
+		4C4FA3382B8B6D84003D2D19 /* UIBezierPath+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+.swift"; sourceTree = "<group>"; };
+		4C4FA3392B8B6D84003D2D19 /* LoadingPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingPlaceholderView.swift; sourceTree = "<group>"; };
+		4C4FA33A2B8B6D84003D2D19 /* Coverable+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Coverable+UIKit.swift"; sourceTree = "<group>"; };
+		4C4FA33B2B8B6D84003D2D19 /* Coverable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coverable.swift; sourceTree = "<group>"; };
 		4C7EFCB72B848C0900EF66DB /* TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestPlan.xctestplan; sourceTree = "<group>"; };
 		4C8A2E8D2AC1E417001A08B9 /* vc.ru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vc.ru.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C8A2E902AC1E417001A08B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +117,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C4FA3372B8B6D84003D2D19 /* LoadingPlaceholderView */ = {
+			isa = PBXGroup;
+			children = (
+				4C4FA3382B8B6D84003D2D19 /* UIBezierPath+.swift */,
+				4C4FA3392B8B6D84003D2D19 /* LoadingPlaceholderView.swift */,
+				4C4FA33A2B8B6D84003D2D19 /* Coverable+UIKit.swift */,
+				4C4FA33B2B8B6D84003D2D19 /* Coverable.swift */,
+			);
+			path = LoadingPlaceholderView;
+			sourceTree = "<group>";
+		};
 		4C5B27F12ACC4D3A00D41E79 /* Data Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +164,7 @@
 				4CAB76672AC5A69700BDA988 /* VCTableViewCellEager.swift */,
 				4C8A2E942AC1E417001A08B9 /* HomeScreenViewController.swift */,
 				4CEFE2552B8634ED00254D16 /* ImagePreviewViewController.swift */,
+				4C4FA3372B8B6D84003D2D19 /* LoadingPlaceholderView */,
 				4C5B27F12ACC4D3A00D41E79 /* Data Models */,
 				4CBAD6D02ACAA877008C5FEA /* System */,
 				4CBAD6CE2ACAA806008C5FEA /* Extensions */,
@@ -322,18 +342,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CAB76682AC5A69700BDA988 /* VCTableViewCellEager.swift in Sources */,
+				4C4FA33F2B8B6D84003D2D19 /* Coverable.swift in Sources */,
 				4C8A2E952AC1E417001A08B9 /* HomeScreenViewController.swift in Sources */,
 				4CEFE2562B8634ED00254D16 /* ImagePreviewViewController.swift in Sources */,
 				4C8A2E912AC1E417001A08B9 /* AppDelegate.swift in Sources */,
 				4CEA5A712AD3D7E000CA97BC /* TimeDecoder.swift in Sources */,
+				4C4FA33D2B8B6D84003D2D19 /* LoadingPlaceholderView.swift in Sources */,
 				4C8A2EA52AC1E8F8001A08B9 /* NetworkService.swift in Sources */,
 				4C8A2E932AC1E417001A08B9 /* SceneDelegate.swift in Sources */,
 				4C2C35122B826908003BC7E2 /* GlobalNameSpace.swift in Sources */,
+				4C4FA33C2B8B6D84003D2D19 /* UIBezierPath+.swift in Sources */,
 				4CCE0B1B2AC9136F00F286E2 /* UIImage+Conevnience.swift in Sources */,
 				4CCE0B1D2AC925DA00F286E2 /* UIColor+Conveniences.swift in Sources */,
 				4CBAD6CD2ACAA71E008C5FEA /* NewsPresenter.swift in Sources */,
 				4CEFE2542B862C8500254D16 /* UIFont+Conveniences.swift in Sources */,
 				4C39AC072B8A155A007673BB /* VCTableViewCell.swift in Sources */,
+				4C4FA33E2B8B6D84003D2D19 /* Coverable+UIKit.swift in Sources */,
 				4CF3C81C2AC2AFF000607E3A /* NewsFeedDataModel.swift in Sources */,
 				4CEFE2582B875C2F00254D16 /* ImagePreviewPresentationController + Delegate.swift in Sources */,
 				4CAB76A02AC5B4AA00BDA988 /* VCCellModel.swift in Sources */,

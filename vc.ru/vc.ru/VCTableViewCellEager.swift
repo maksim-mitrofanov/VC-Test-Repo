@@ -31,10 +31,16 @@ class VCTableViewCellEager: UITableViewCell, VCTableViewCell {
     let titleAndBodyStackView = UIStackView()
     let feedbackControlsStackView = UIStackView()
     
+    // Placeholders
+    private let topStackViewPlaceholderView = LoadingPlaceholderView()
+    private let titleAndBodyStackViewPlaceholderView = LoadingPlaceholderView()
+    private let feedbackControlsStackViewPlaceholderView = LoadingPlaceholderView()
+    private let articleImageViewPlaceholderView = LoadingPlaceholderView()
+
     let iconTargetSize = CGSize(width: 22, height: 22)
     
     // Storage
-    private(set) var dataModel: VCCellModel? = nil
+    private(set) var dataModel: (any VCCellModel)? = nil
             
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -52,9 +58,19 @@ class VCTableViewCellEager: UITableViewCell, VCTableViewCell {
         self.accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableViewCell.rawValue
     }
 
-    func setup(from model: VCCellModel) {
+    func setup(from model: any VCCellModel) {
         dataModel = model
         updateWithNewDataModel()
+        
+        if let _ = model as? VCEmptyCellModel {
+            topStackViewPlaceholderView.cover(topStackView, animated: true)
+            titleAndBodyStackViewPlaceholderView.cover(titleAndBodyStackView, animated: true)
+            feedbackControlsStackViewPlaceholderView.cover(feedbackControlsStackView, animated: true)
+        } else {
+            topStackViewPlaceholderView.uncover(animated: true)
+            titleAndBodyStackViewPlaceholderView.uncover(animated: true)
+            feedbackControlsStackViewPlaceholderView.uncover(animated: true)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -87,8 +103,8 @@ private extension VCTableViewCellEager {
             
             if model.articleImageType.lowercased() == "gif" {
                 articleImageView.image = UIImage(placeholder: .gif)
-            } else {
-                articleImageView.image = UIImage(data: model.articleImageData, placeholder: .static_image)
+            } else if let articleImageData = model.articleImageData {
+                articleImageView.image = UIImage(data: articleImageData)
             }
         }
     }
@@ -130,7 +146,7 @@ private extension VCTableViewCellEager {
     
     func styleSubsiteImage() {
         subsiteImageView.clipsToBounds = true
-        subsiteImageView.backgroundColor = .gray
+        subsiteImageView.backgroundColor = .clear
         subsiteImageView.layer.cornerRadius = 8
         
         NSLayoutConstraint.activate([
@@ -153,7 +169,7 @@ private extension VCTableViewCellEager {
     
     func setupArticleImage() {
         setupArticleImageTapGesture()
-        articleImageView.backgroundColor = .black
+        articleImageView.backgroundColor = .clear
         
         contentView.addSubview(articleImageView)
         articleImageView.translatesAutoresizingMaskIntoConstraints = false

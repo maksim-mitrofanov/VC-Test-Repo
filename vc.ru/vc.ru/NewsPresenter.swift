@@ -18,7 +18,7 @@ protocol NewsPresenterDelegate: AnyObject {
 
 final class NewsPresenter: NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
-    private var presentedNews = [VCCellModel]()
+    private var presentedNews = [any VCCellModel]()
     private var lastElementID: Int? = nil
     weak var delegate: NewsPresenterDelegate?
     
@@ -33,7 +33,7 @@ final class NewsPresenter: NetworkServiceDelegate {
         }
     }
     
-    func getCell(at index: Int) -> VCCellModel {
+    func getCell(at index: Int) -> any VCCellModel {
         if index == (cellCount - 1) {
             fetchLatestNews()
         }
@@ -42,6 +42,24 @@ final class NewsPresenter: NetworkServiceDelegate {
     
     var cellCount: Int {
         presentedNews.count
+    }
+    
+    init() {
+        for _ in 0...3 {
+            presentedNews.append(VCEmptyCellModel())
+        }
+    }
+    
+    var firstEmptyCellIndex: Int? {
+        let index = presentedNews.firstIndex { model in
+            if let emptyModel = model as? VCEmptyCellModel {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        return index
     }
 }
 
@@ -73,14 +91,14 @@ private extension NewsPresenter {
             var avatarImageData: Data? = Data()
             var articleImageData: Data? = Data()
             
-            DispatchQueue.global(qos: .userInteractive).async {
+            DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 2) {
                 avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
                 articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
                 
                 let articleSubtitle = model.getArticleSubtitle()
                 let timeDescription = TimeDecoder.getDescriptionFor(unixTime: model.date)
                 
-                let model = VCCellModel(
+                let model = VCRealCellModel(
                     subsiteImageData: avatarImageData,
                     subsiteName: model.subsite.name,
                     articleImageData: articleImageData,
@@ -104,7 +122,11 @@ private extension NewsPresenter {
                  However, it should be investigated further on.
                  */
                 if !self.presentedNews.contains(where: { $0.id == model.id }) {
-                    self.presentedNews.append(model)
+                    if let firstEmptyCellIndex = self.firstEmptyCellIndex {
+                        self.presentedNews[firstEmptyCellIndex] = model
+                    } else {
+                        self.presentedNews.append(model)
+                    }
                 }
                 
                 DispatchQueue.main.async {
