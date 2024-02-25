@@ -54,6 +54,7 @@ final class HomeScreenViewController: UIViewController {
         presenter.fetchLatestNews()
         placeholderView = LoadingPlaceholderView()
         placeholderView?.cover(mainTableView)
+        mainTableView.isUserInteractionEnabled = false
     }
 }
 
@@ -95,6 +96,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
 extension HomeScreenViewController: NewsPresenterDelegate {
     func newsWereUpdated() {
         placeholderView?.uncover(animated: true)
+        mainTableView.isUserInteractionEnabled = true
         mainTableView.reloadData()
     }
 }
