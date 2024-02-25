@@ -85,8 +85,8 @@ private extension NewsPresenter {
         models.forEach { model in
             var avatarImageData: Data? = Data()
             var articleImageData: Data? = Data()
-            
             DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 2) {
+            
                 avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
                 articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
                 

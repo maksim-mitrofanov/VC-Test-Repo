@@ -8,7 +8,32 @@
 import UIKit
 
 class VCTableViewCell: UITableViewCell {
-    static var id: String = GlobalNameSpace.vcHomeScreenTableViewCell.rawValue
+    static let id = GlobalNameSpace.vcHomeScreenTableViewCell.rawValue
+    static let accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableViewCell.rawValue
+                    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupAllSubviews()
+        contentView.backgroundColor = UIColor.white
+        self.accessibilityIdentifier = VCTableViewCell.accessibilityIdentifier
+    }
+
+    func setup(from displayedModel: VCCellModel) {
+        updateDisplayedModel(to: displayedModel)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    // Views
+    lazy private var subsiteImageView: UIImageView = {
+        return UIImageView()
+    }()
+    
+    lazy var articleImageView: UIImageView = {
+        return UIImageView()
+    }()
     
     // Views
     private let subsiteNameLabel = UILabel()
@@ -29,17 +54,10 @@ class VCTableViewCell: UITableViewCell {
     let topStackView = UIStackView()
     let titleAndBodyStackView = UIStackView()
     let feedbackControlsStackView = UIStackView()
-    
-    // Storage
-    private var hasCoveredViews = false
-    private(set) var displayedModel: VCCellModel? {
-        didSet {
-            updateAllViews()
-        }
-    }
-                    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+}
+
+private extension VCTableViewCell {
+    func setupAllSubviews() {
         styleSubsiteImage()
         styleSubsiteNameLabel()
         stylePublishedTimeLabel()
@@ -50,46 +68,24 @@ class VCTableViewCell: UITableViewCell {
         setupArticleTitleAndSubtitle()
         setupArticleImage()
         setupFeedbackControlsStackView()
-        contentView.backgroundColor = UIColor.white
-        self.accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableViewCell.rawValue
-    }
-
-    func setup(from model: VCCellModel) {
-        displayedModel = model
     }
     
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    lazy private var subsiteImageView: UIImageView = {
-        return UIImageView()
-    }()
-    
-    lazy var articleImageView: UIImageView = {
-        return UIImageView()
-    }()
-}
-
-private extension VCTableViewCell {
-    func updateAllViews() {
-        if let displayedModel {
-            subsiteNameLabel.text = displayedModel.subsiteName
-            timeSincePublishedLabel.text = displayedModel.timeSincePublished
-            articleTitleLabel.text = displayedModel.title
-            articleBodyLabel.text = displayedModel.bodyText
-            commentsCountLabel.text = displayedModel.commentsCount.description
-            repostsCountLabel.text = displayedModel.repostsCount.description
-            totalVotesCountLabel.text = displayedModel.votes.description
-            
-            if let subsiteAvatarData = displayedModel.subsiteImageData {
-                subsiteImageView.image = UIImage(data: subsiteAvatarData)
-            }
-            if displayedModel.articleImageType.lowercased() == "gif" {
-                articleImageView.image = UIImage(placeholder: .gif)
-            } else if let articleImageData = displayedModel.articleImageData {
-                articleImageView.image = UIImage(data: articleImageData)
-            }
+    func updateDisplayedModel(to model: VCCellModel) {
+        subsiteNameLabel.text = model.subsiteName
+        timeSincePublishedLabel.text = model.timeSincePublished
+        articleTitleLabel.text = model.title
+        articleBodyLabel.text = model.bodyText
+        commentsCountLabel.text = model.commentsCount?.description
+        repostsCountLabel.text = model.repostsCount?.description
+        totalVotesCountLabel.text = model.votes?.description
+        
+        if let subsiteAvatarData = model.subsiteImageData {
+            subsiteImageView.image = UIImage(data: subsiteAvatarData)
+        }
+        if model.articleImageType.lowercased() == "gif" {
+            articleImageView.image = UIImage(placeholder: .gif)
+        } else if let articleImageData = model.articleImageData {
+            articleImageView.image = UIImage(data: articleImageData)
         }
     }
     
