@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4C2C35122B826908003BC7E2 /* GlobalNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2C35112B826908003BC7E2 /* GlobalNameSpace.swift */; };
-		4C39AC072B8A155A007673BB /* VCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C39AC062B8A155A007673BB /* VCTableViewCell.swift */; };
 		4C4FA33C2B8B6D84003D2D19 /* UIBezierPath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FA3382B8B6D84003D2D19 /* UIBezierPath+.swift */; };
 		4C4FA33D2B8B6D84003D2D19 /* LoadingPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FA3392B8B6D84003D2D19 /* LoadingPlaceholderView.swift */; };
 		4C4FA33E2B8B6D84003D2D19 /* Coverable+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FA33A2B8B6D84003D2D19 /* Coverable+UIKit.swift */; };
@@ -32,7 +31,7 @@
 		4C92FF0F2AC7E493007D5F81 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C92FF022AC7E493007D5F81 /* Roboto-Bold.ttf */; };
 		4C92FF102AC7E493007D5F81 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C92FF032AC7E493007D5F81 /* Roboto-Thin.ttf */; };
 		4C92FF112AC7E493007D5F81 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C92FF042AC7E493007D5F81 /* Roboto-Black.ttf */; };
-		4CAB76682AC5A69700BDA988 /* VCTableViewCellEager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB76672AC5A69700BDA988 /* VCTableViewCellEager.swift */; };
+		4CAB76682AC5A69700BDA988 /* VCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB76672AC5A69700BDA988 /* VCTableViewCell.swift */; };
 		4CAB76A02AC5B4AA00BDA988 /* VCCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB769F2AC5B4AA00BDA988 /* VCCellModel.swift */; };
 		4CBAD6CD2ACAA71E008C5FEA /* NewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBAD6CC2ACAA71E008C5FEA /* NewsPresenter.swift */; };
 		4CC3E7182B825FC400F63552 /* vc_ru_basic_UI_test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC3E7172B825FC400F63552 /* vc_ru_basic_UI_test.swift */; };
@@ -58,7 +57,6 @@
 
 /* Begin PBXFileReference section */
 		4C2C35112B826908003BC7E2 /* GlobalNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalNameSpace.swift; sourceTree = "<group>"; };
-		4C39AC062B8A155A007673BB /* VCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCTableViewCell.swift; sourceTree = "<group>"; };
 		4C4FA3382B8B6D84003D2D19 /* UIBezierPath+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+.swift"; sourceTree = "<group>"; };
 		4C4FA3392B8B6D84003D2D19 /* LoadingPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingPlaceholderView.swift; sourceTree = "<group>"; };
 		4C4FA33A2B8B6D84003D2D19 /* Coverable+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Coverable+UIKit.swift"; sourceTree = "<group>"; };
@@ -85,7 +83,7 @@
 		4C92FF022AC7E493007D5F81 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		4C92FF032AC7E493007D5F81 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		4C92FF042AC7E493007D5F81 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
-		4CAB76672AC5A69700BDA988 /* VCTableViewCellEager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCTableViewCellEager.swift; sourceTree = "<group>"; };
+		4CAB76672AC5A69700BDA988 /* VCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCTableViewCell.swift; sourceTree = "<group>"; };
 		4CAB769F2AC5B4AA00BDA988 /* VCCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCCellModel.swift; sourceTree = "<group>"; };
 		4CBAD6CC2ACAA71E008C5FEA /* NewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsPresenter.swift; sourceTree = "<group>"; };
 		4CC3E7152B825FC400F63552 /* vc-ru-basic-UI-test.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "vc-ru-basic-UI-test.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,8 +158,7 @@
 			children = (
 				4C8A2EA42AC1E8F8001A08B9 /* NetworkService.swift */,
 				4CBAD6CC2ACAA71E008C5FEA /* NewsPresenter.swift */,
-				4C39AC062B8A155A007673BB /* VCTableViewCell.swift */,
-				4CAB76672AC5A69700BDA988 /* VCTableViewCellEager.swift */,
+				4CAB76672AC5A69700BDA988 /* VCTableViewCell.swift */,
 				4C8A2E942AC1E417001A08B9 /* HomeScreenViewController.swift */,
 				4CEFE2552B8634ED00254D16 /* ImagePreviewViewController.swift */,
 				4C4FA3372B8B6D84003D2D19 /* LoadingPlaceholderView */,
@@ -341,7 +338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CAB76682AC5A69700BDA988 /* VCTableViewCellEager.swift in Sources */,
+				4CAB76682AC5A69700BDA988 /* VCTableViewCell.swift in Sources */,
 				4C4FA33F2B8B6D84003D2D19 /* Coverable.swift in Sources */,
 				4C8A2E952AC1E417001A08B9 /* HomeScreenViewController.swift in Sources */,
 				4CEFE2562B8634ED00254D16 /* ImagePreviewViewController.swift in Sources */,
@@ -356,7 +353,6 @@
 				4CCE0B1D2AC925DA00F286E2 /* UIColor+Conveniences.swift in Sources */,
 				4CBAD6CD2ACAA71E008C5FEA /* NewsPresenter.swift in Sources */,
 				4CEFE2542B862C8500254D16 /* UIFont+Conveniences.swift in Sources */,
-				4C39AC072B8A155A007673BB /* VCTableViewCell.swift in Sources */,
 				4C4FA33E2B8B6D84003D2D19 /* Coverable+UIKit.swift in Sources */,
 				4CF3C81C2AC2AFF000607E3A /* NewsFeedDataModel.swift in Sources */,
 				4CEFE2582B875C2F00254D16 /* ImagePreviewPresentationController + Delegate.swift in Sources */,

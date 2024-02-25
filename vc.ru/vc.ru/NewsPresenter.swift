@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Foundation
 
 protocol NetworkServiceDelegate: AnyObject {
     func receiveNews(data: ServerFeedback?)
@@ -18,7 +17,7 @@ protocol NewsPresenterDelegate: AnyObject {
 
 final class NewsPresenter: NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
-    private var presentedNews = [any VCCellModel]()
+    private var presentedNews = [VCCellModel]()
     private var lastElementID: Int? = nil
     weak var delegate: NewsPresenterDelegate?
     
@@ -33,7 +32,7 @@ final class NewsPresenter: NetworkServiceDelegate {
         }
     }
     
-    func getCell(at index: Int) -> any VCCellModel {
+    func getCell(at index: Int) -> VCCellModel {
         if index == (cellCount - 1) {
             fetchLatestNews()
         }
@@ -45,18 +44,14 @@ final class NewsPresenter: NetworkServiceDelegate {
     }
     
     init() {
-        for _ in 0...3 {
-            presentedNews.append(VCEmptyCellModel())
+        for _ in 0..<2 {
+            presentedNews.append(VCCellModel.empty)
         }
     }
     
     var firstEmptyCellIndex: Int? {
         let index = presentedNews.firstIndex { model in
-            if let emptyModel = model as? VCEmptyCellModel {
-                return true
-            } else {
-                return false
-            }
+            return model == VCCellModel.empty
         }
         
         return index
@@ -98,7 +93,7 @@ private extension NewsPresenter {
                 let articleSubtitle = model.getArticleSubtitle()
                 let timeDescription = TimeDecoder.getDescriptionFor(unixTime: model.date)
                 
-                let model = VCRealCellModel(
+                let model = VCCellModel(
                     subsiteImageData: avatarImageData,
                     subsiteName: model.subsite.name,
                     articleImageData: articleImageData,
@@ -123,6 +118,7 @@ private extension NewsPresenter {
                  */
                 if !self.presentedNews.contains(where: { $0.id == model.id }) {
                     if let firstEmptyCellIndex = self.firstEmptyCellIndex {
+                        let value = firstEmptyCellIndex
                         self.presentedNews[firstEmptyCellIndex] = model
                     } else {
                         self.presentedNews.append(model)

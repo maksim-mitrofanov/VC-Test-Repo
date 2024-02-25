@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VCRealCellModel: VCCellModel {
+struct VCCellModel: Equatable {
     let subsiteImageData: Data?
     let subsiteName: String
     let articleImageData: Data?
@@ -21,30 +21,18 @@ struct VCRealCellModel: VCCellModel {
     let id: Int
 }
 
-struct VCEmptyCellModel: VCCellModel {
-    let subsiteImageData: Data? = nil
-    let subsiteName: String = "Placeholder"
-    let articleImageData: Data? = nil
-    let articleImageType: String = "Placeholder"
-    let timeSincePublished: String = "Placeholder"
-    let title: String = "Placeholder"
-    let bodyText: String = "Placeholder"
-    let commentsCount: Int = 0
-    let repostsCount: Int = 0
-    let votes: Int = 0
-    let id: Int = 0
-}
-
-protocol VCCellModel: Identifiable {
-    var subsiteImageData: Data? { get }
-    var subsiteName: String { get }
-    var articleImageData: Data? { get }
-    var articleImageType: String { get }
-    var timeSincePublished: String { get }
-    var title: String { get }
-    var bodyText: String { get }
-    var commentsCount: Int { get }
-    var repostsCount: Int { get }
-    var votes: Int { get }
-    var id: Int { get }
+extension VCCellModel {
+    static let empty = VCCellModel(
+        subsiteImageData: nil,
+        subsiteName: "Placeholder",
+        articleImageData: nil,
+        articleImageType: "Placeholder",
+        timeSincePublished: "Placeholder",
+        title: "Placeholder",
+        bodyText: "Placeholder",
+        commentsCount: 0,
+        repostsCount: 0,
+        votes: 0,
+        id: 0
+    )
 }
