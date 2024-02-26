@@ -8,58 +8,30 @@
 import UIKit
 
 final class HomeScreenViewController: UIViewController {
-    // Must be an injected properties
     let presenter = NewsPresenter()
-    
-    // Animations
-    private var placeholderView: LoadingPlaceholderView? = nil
-    
-    //Properties
-    private let accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableViewLayout()
+        coverMainTableView()
         presenter.delegate = self
-        loadAndShowData()
+        presenter.fetchLatestNews()
     }
     
-    lazy private var mainTableView: UITableView = {
+    private var placeholderView: LoadingPlaceholderView? = nil
+    
+    private lazy var mainTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.accessibilityIdentifier = accessibilityIdentifier
+        tableView.accessibilityIdentifier = GlobalNameSpace.vcHomeScreenTableView.rawValue
         tableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
         return tableView
     }()
-    
-    lazy private var imagePreviewTransitionDelegate: ImagePreviewTransitionDelegate = {
-        let transitionDelegate = ImagePreviewTransitionDelegate()
-        return transitionDelegate
-    }()
-    
-    func presentImagePreviewController(withImage imageData: Data?, fromFrame frame: CGRect) {
-        let previewController = ImagePreviewViewController()
-        previewController.setImageData(to: imageData)
-        previewController.modalPresentationStyle = .custom
-        
-        let transitionDelegate = ImagePreviewTransitionDelegate()
-        transitionDelegate.originFrame = frame
-        previewController.transitioningDelegate = transitionDelegate
-        
-        present(previewController, animated: true, completion: nil)
-    }
-    
-    func loadAndShowData() {
-        setupTableViewLayout()
-        presenter.fetchLatestNews()
-        placeholderView = LoadingPlaceholderView()
-        placeholderView?.cover(mainTableView)
-        mainTableView.isUserInteractionEnabled = false
-    }
 }
 
 // MARK: - Table View
-extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {    
+extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     private func setupTableViewLayout() {
         view.addSubview(mainTableView)
         mainTableView.separatorStyle = .none
@@ -72,6 +44,12 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
             mainTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    private func coverMainTableView() {
+        placeholderView = LoadingPlaceholderView()
+        placeholderView?.cover(mainTableView)
+        mainTableView.isUserInteractionEnabled = false
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

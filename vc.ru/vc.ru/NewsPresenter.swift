@@ -48,14 +48,6 @@ final class NewsPresenter: NetworkServiceDelegate {
             presentedNews.append(VCCellModel.empty)
         }
     }
-    
-    var firstEmptyCellIndex: Int? {
-        let index = presentedNews.firstIndex { model in
-            return model == VCCellModel.empty
-        }
-        
-        return index
-    }
 }
 
 private extension NewsPresenter {
@@ -116,13 +108,13 @@ private extension NewsPresenter {
                  The below if statement is a temporary fix for this bug
                  However, it should be investigated further on.
                  */
-                if !self.presentedNews.contains(where: { $0.id == model.id }) {
-                    if let firstEmptyCellIndex = self.firstEmptyCellIndex {
-                        let value = firstEmptyCellIndex
-                        self.presentedNews[firstEmptyCellIndex] = model
-                    } else {
-                        self.presentedNews.append(model)
-                    }
+                
+                if let firstEmptyCellIndex = self.presentedNews.firstIndex(of: .empty) {
+                    self.presentedNews[firstEmptyCellIndex] = model
+                }
+                
+                else if !self.presentedNews.contains(where: { $0.id == model.id }) {
+                    self.presentedNews.append(model)
                 }
                 
                 DispatchQueue.main.async {
