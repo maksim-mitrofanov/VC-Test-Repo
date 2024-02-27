@@ -8,10 +8,10 @@
 import UIKit
 
 final class HomeScreenVC: UIViewController, HomeScreenInput {
-    private let presenter: AnyObject
+    private let presenter: HomeScreenPresenterProtocol
     private var presentedNews = [VCCellModel]()
     
-    fileprivate init(presenter: AnyObject) {
+    fileprivate init(presenter: HomeScreenPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -22,9 +22,9 @@ final class HomeScreenVC: UIViewController, HomeScreenInput {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getNews?()
         setupTableViewLayout()
         coverMainTableView()
+        presenter.fetchNews()
     }
     
     // MARK: HomeScreenInput
@@ -34,8 +34,6 @@ final class HomeScreenVC: UIViewController, HomeScreenInput {
         mainTableView.isUserInteractionEnabled = true
         mainTableView.reloadData()
     }
-    
-    var getNews: (() -> Void)?
     
     // MARK: Views
     private var placeholderView: LoadingPlaceholderView? = nil
@@ -85,6 +83,10 @@ extension HomeScreenVC: UITableViewDataSource, UITableViewDelegate {
         
         presentedCell.setup(from: model)
         presentedCell.selectionStyle = .none
+        
+        if indexPath.row == presentedNews.count - 1 {
+            presenter.fetchNews()
+        }
         
         return presentedCell
     }

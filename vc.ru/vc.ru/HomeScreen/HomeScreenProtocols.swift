@@ -9,5 +9,8 @@ import Foundation
 
 protocol HomeScreenInput: AnyObject {
     func display(news: [VCCellModel])
-    var getNews: (() -> Void)? { get set }
+}
+
+protocol HomeScreenPresenterProtocol: AnyObject {
+    func fetchNews()
 }

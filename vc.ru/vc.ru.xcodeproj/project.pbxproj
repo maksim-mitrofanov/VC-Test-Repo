@@ -31,8 +31,7 @@
 		4C92FF0F2AC7E493007D5F81 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C92FF022AC7E493007D5F81 /* Roboto-Bold.ttf */; };
 		4C92FF102AC7E493007D5F81 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C92FF032AC7E493007D5F81 /* Roboto-Thin.ttf */; };
 		4C92FF112AC7E493007D5F81 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C92FF042AC7E493007D5F81 /* Roboto-Black.ttf */; };
-		4CA346B62B8CAEB1007EC095 /* HomeScreenInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA346B52B8CAEB1007EC095 /* HomeScreenInput.swift */; };
-		4CA346BB2B8CCDAC007EC095 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA346BA2B8CCDAC007EC095 /* SwiftUIView.swift */; };
+		4CA346B62B8CAEB1007EC095 /* HomeScreenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA346B52B8CAEB1007EC095 /* HomeScreenProtocols.swift */; };
 		4CAB76682AC5A69700BDA988 /* VCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB76672AC5A69700BDA988 /* VCTableViewCell.swift */; };
 		4CAB76A02AC5B4AA00BDA988 /* VCCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB769F2AC5B4AA00BDA988 /* VCCellModel.swift */; };
 		4CBAD6CD2ACAA71E008C5FEA /* HomeScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBAD6CC2ACAA71E008C5FEA /* HomeScreenPresenter.swift */; };
@@ -85,8 +84,7 @@
 		4C92FF022AC7E493007D5F81 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		4C92FF032AC7E493007D5F81 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		4C92FF042AC7E493007D5F81 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
-		4CA346B52B8CAEB1007EC095 /* HomeScreenInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenInput.swift; sourceTree = "<group>"; };
-		4CA346BA2B8CCDAC007EC095 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		4CA346B52B8CAEB1007EC095 /* HomeScreenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenProtocols.swift; sourceTree = "<group>"; };
 		4CAB76672AC5A69700BDA988 /* VCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCTableViewCell.swift; sourceTree = "<group>"; };
 		4CAB769F2AC5B4AA00BDA988 /* VCCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCCellModel.swift; sourceTree = "<group>"; };
 		4CBAD6CC2ACAA71E008C5FEA /* HomeScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenPresenter.swift; sourceTree = "<group>"; };
@@ -197,10 +195,9 @@
 		4CA346B92B8CB110007EC095 /* HomeScreen */ = {
 			isa = PBXGroup;
 			children = (
-				4CA346B52B8CAEB1007EC095 /* HomeScreenInput.swift */,
+				4CA346B52B8CAEB1007EC095 /* HomeScreenProtocols.swift */,
 				4CBAD6CC2ACAA71E008C5FEA /* HomeScreenPresenter.swift */,
 				4C8A2E942AC1E417001A08B9 /* HomeScreenVC.swift */,
-				4CA346BA2B8CCDAC007EC095 /* SwiftUIView.swift */,
 			);
 			path = HomeScreen;
 			sourceTree = "<group>";
@@ -360,13 +357,12 @@
 				4CEA5A712AD3D7E000CA97BC /* TimeDecoder.swift in Sources */,
 				4C4FA33D2B8B6D84003D2D19 /* LoadingPlaceholderView.swift in Sources */,
 				4C8A2EA52AC1E8F8001A08B9 /* NetworkService.swift in Sources */,
-				4CA346BB2B8CCDAC007EC095 /* SwiftUIView.swift in Sources */,
 				4C8A2E932AC1E417001A08B9 /* SceneDelegate.swift in Sources */,
 				4C2C35122B826908003BC7E2 /* GlobalNameSpace.swift in Sources */,
 				4C4FA33C2B8B6D84003D2D19 /* UIBezierPath+.swift in Sources */,
 				4CCE0B1B2AC9136F00F286E2 /* UIImage+Conevnience.swift in Sources */,
 				4CCE0B1D2AC925DA00F286E2 /* UIColor+Conveniences.swift in Sources */,
-				4CA346B62B8CAEB1007EC095 /* HomeScreenInput.swift in Sources */,
+				4CA346B62B8CAEB1007EC095 /* HomeScreenProtocols.swift in Sources */,
 				4CBAD6CD2ACAA71E008C5FEA /* HomeScreenPresenter.swift in Sources */,
 				4CEFE2542B862C8500254D16 /* UIFont+Conveniences.swift in Sources */,
 				4C4FA33E2B8B6D84003D2D19 /* Coverable+UIKit.swift in Sources */,

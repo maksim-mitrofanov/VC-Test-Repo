@@ -11,27 +11,21 @@ protocol NetworkServiceDelegate: AnyObject {
     func receiveNews(data: ServerFeedback?)
 }
 
-protocol NewsPresenterDelegate: AnyObject {
-    func newsWereUpdated()
-}
-
-final class HomeScreenPresenter: NetworkServiceDelegate {
+final class HomeScreenPresenter: HomeScreenPresenterProtocol, NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
     
     private var presentedNews = [VCCellModel]()
     
-    weak var viewInput: HomeScreenInput? {
-        didSet {
-            viewInput?.getNews = { [weak self] in
-                self?.fetchLatestNews()
-            }
-        }
-    }
+    weak var viewInput: HomeScreenInput? 
     
-    func fetchLatestNews() {
-        viewInput?.display(news: presentedNews)
-        NetworkService.shared.presenter = self
+    func fetchNews() {
+        if presentedNews.count == 0 {
+            presentedNews = [.empty, .empty]
+            viewInput?.display(news: presentedNews)
+            NetworkService.shared.presenter = self
+        }
+        
         NetworkService.shared.fetchNews(lastId: lastElementID)
     }
     
@@ -39,10 +33,6 @@ final class HomeScreenPresenter: NetworkServiceDelegate {
         if let news = data?.result.news {
             appendToPresentedNews(models: news)
         }
-    }
-    
-    init() {
-        presentedNews = [.empty, .empty]
     }
 }
 
@@ -70,11 +60,16 @@ private extension HomeScreenPresenter {
     func appendToPresentedNews(models: [ServerFeedback.NewsEntry]) {
         lastElementID = models.last?.id
         
+        let group = DispatchGroup() // Создаем новую группу диспетчеризации
+        
         models.forEach { model in
             var avatarImageData: Data? = Data()
             var articleImageData: Data? = Data()
-            DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 2) {
             
+            group.enter() // Указываем, что начинаем новую асинхронную операцию
+            
+            DispatchQueue.global(qos: .userInteractive).async {
+                
                 avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
                 articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
                 
@@ -95,28 +90,19 @@ private extension HomeScreenPresenter {
                     id: model.id
                 )
                 
-                #warning("Has to be fixed!")
-                /*
-                 When fetching content, I use model.last.id, that is later used in the NetworkService call.
-                 For some reason, the data that I get back from the server may be a duplicate of the data
-                 that is already present in the presented news array.
-                 
-                 The below if statement is a temporary fix for this bug
-                 However, it should be investigated further on.
-                 */
-                
                 if let firstEmptyCellIndex = self.presentedNews.firstIndex(of: .empty) {
                     self.presentedNews[firstEmptyCellIndex] = model
                 }
-                
                 else if !self.presentedNews.contains(where: { $0.id == model.id }) {
                     self.presentedNews.append(model)
                 }
                 
-                DispatchQueue.main.async {
-                    self.viewInput?.display(news: self.presentedNews)
-                }
+                group.leave() // Указываем, что текущая асинхронная операция завершена
             }
+        }
+        
+        group.notify(queue: .main) {
+            self.viewInput?.display(news: self.presentedNews)
         }
     }
 }
