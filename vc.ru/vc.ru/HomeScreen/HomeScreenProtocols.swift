@@ -14,3 +14,4 @@ protocol HomeScreenInput: AnyObject {
 protocol HomeScreenPresenterProtocol: AnyObject {
     func fetchNews()
 }
+

@@ -93,8 +93,8 @@ extension HomeScreenVC: UITableViewDataSource, UITableViewDelegate {
 }
 
 final class HomeScreenAssembly {
-    func assemble() -> UIViewController {
-        let presenter = HomeScreenPresenter()
+    func assemble(with networkService: NetworkService) -> UIViewController {
+        let presenter = HomeScreenPresenter(networkService: networkService)
         let viewController = HomeScreenVC(presenter: presenter)
         presenter.viewInput = viewController
         return viewController

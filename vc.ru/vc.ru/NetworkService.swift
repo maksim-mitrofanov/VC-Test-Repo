@@ -7,10 +7,7 @@
 
 import Foundation
 
-final class NetworkService {
-    static let shared = NetworkService()
-    private init() { }
-    
+final class NetworkService {    
     weak var presenter: NetworkServiceDelegate? = nil
         
     func fetchNews(lastId id: Int? = nil) {
@@ -39,6 +36,10 @@ final class NetworkService {
         
         task.resume()
     }
+}
+
+protocol NetworkServiceDelegate: AnyObject {
+    func receiveNews(data: ServerFeedback?)
 }
 
 private extension NetworkService {

@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol NetworkServiceDelegate: AnyObject {
-    func receiveNews(data: ServerFeedback?)
-}
-
 final class HomeScreenPresenter: HomeScreenPresenterProtocol, NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
@@ -18,15 +14,20 @@ final class HomeScreenPresenter: HomeScreenPresenterProtocol, NetworkServiceDele
     private var presentedNews = [VCCellModel]()
     
     weak var viewInput: HomeScreenInput? 
+    private let networkService: NetworkService
+    
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+    }
     
     func fetchNews() {
         if presentedNews.count == 0 {
             presentedNews = [.empty, .empty]
             viewInput?.display(news: presentedNews)
-            NetworkService.shared.presenter = self
+            networkService.presenter = self
         }
         
-        NetworkService.shared.fetchNews(lastId: lastElementID)
+        networkService.fetchNews(lastId: lastElementID)
     }
     
     func receiveNews(data: ServerFeedback?) {
@@ -45,7 +46,7 @@ private extension HomeScreenPresenter {
             let group = DispatchGroup()
             
             group.enter()
-            NetworkService.shared.fetchAsset(uuid: uuid) { fetchedData in
+            networkService.fetchAsset(uuid: uuid) { fetchedData in
                 avatarData = fetchedData
                 self.subsiteAvaratarCache[uuid] = fetchedData
                 group.leave()
