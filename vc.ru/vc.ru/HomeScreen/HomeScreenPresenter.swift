@@ -1,5 +1,5 @@
 //
-//  NewsPresenter.swift
+//  HomeScreenPresenter.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 02.10.2023.
@@ -15,13 +15,22 @@ protocol NewsPresenterDelegate: AnyObject {
     func newsWereUpdated()
 }
 
-final class NewsPresenter: NetworkServiceDelegate {
+final class HomeScreenPresenter: NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
-    private var presentedNews = [VCCellModel]()
     private var lastElementID: Int? = nil
-    weak var delegate: NewsPresenterDelegate?
+    
+    private var presentedNews = [VCCellModel]()
+    
+    weak var viewInput: HomeScreenInput? {
+        didSet {
+            viewInput?.getNews = { [weak self] in
+                self?.fetchLatestNews()
+            }
+        }
+    }
     
     func fetchLatestNews() {
+        viewInput?.display(news: presentedNews)
         NetworkService.shared.presenter = self
         NetworkService.shared.fetchNews(lastId: lastElementID)
     }
@@ -32,25 +41,12 @@ final class NewsPresenter: NetworkServiceDelegate {
         }
     }
     
-    func getCell(at index: Int) -> VCCellModel {
-        if index == (cellCount - 1) {
-            fetchLatestNews()
-        }
-        return presentedNews[index]
-    }
-    
-    var cellCount: Int {
-        presentedNews.count
-    }
-    
     init() {
-        for _ in 0..<2 {
-            presentedNews.append(VCCellModel.empty)
-        }
+        presentedNews = [.empty, .empty]
     }
 }
 
-private extension NewsPresenter {
+private extension HomeScreenPresenter {
     func getSubsiteAvatar(uuid: String) -> Data? {
         var avatarData: Data? = nil
         
@@ -118,7 +114,7 @@ private extension NewsPresenter {
                 }
                 
                 DispatchQueue.main.async {
-                    self.delegate?.newsWereUpdated()
+                    self.viewInput?.display(news: self.presentedNews)
                 }
             }
         }

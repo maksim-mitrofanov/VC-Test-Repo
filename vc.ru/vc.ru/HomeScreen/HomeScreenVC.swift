@@ -1,5 +1,5 @@
 //
-//  HomeScreenViewController.swift
+//  HomeScreenVC.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 25.09.2023.
@@ -7,17 +7,37 @@
 
 import UIKit
 
-final class HomeScreenViewController: UIViewController {
-    let presenter = NewsPresenter()
-        
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupTableViewLayout()
-        coverMainTableView()
-        presenter.delegate = self
-        presenter.fetchLatestNews()
+final class HomeScreenVC: UIViewController, HomeScreenInput {
+    private let presenter: AnyObject
+    private var presentedNews = [VCCellModel]()
+    
+    fileprivate init(presenter: AnyObject) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getNews?()
+        setupTableViewLayout()
+        coverMainTableView()
+    }
+    
+    // MARK: HomeScreenInput
+    func display(news: [VCCellModel]) {
+        presentedNews = news
+        placeholderView?.uncover(animated: true)
+        mainTableView.isUserInteractionEnabled = true
+        mainTableView.reloadData()
+    }
+    
+    var getNews: (() -> Void)?
+    
+    // MARK: Views
     private var placeholderView: LoadingPlaceholderView? = nil
     
     private lazy var mainTableView: UITableView = {
@@ -31,7 +51,7 @@ final class HomeScreenViewController: UIViewController {
 }
 
 // MARK: - Table View
-extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
+extension HomeScreenVC: UITableViewDataSource, UITableViewDelegate {
     private func setupTableViewLayout() {
         view.addSubview(mainTableView)
         mainTableView.separatorStyle = .none
@@ -53,7 +73,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.cellCount
+        return presentedNews.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -61,7 +81,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
         else { fatalError() }
         
         let cellIndex = indexPath.section + indexPath.row
-        let model = presenter.getCell(at: cellIndex)
+        let model = presentedNews[cellIndex]
         
         presentedCell.setup(from: model)
         presentedCell.selectionStyle = .none
@@ -70,11 +90,11 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// NewsPresenterDelegate
-extension HomeScreenViewController: NewsPresenterDelegate {
-    func newsWereUpdated() {
-        placeholderView?.uncover(animated: true)
-        mainTableView.isUserInteractionEnabled = true
-        mainTableView.reloadData()
+final class HomeScreenAssembly {
+    func assemble() -> UIViewController {
+        let presenter = HomeScreenPresenter()
+        let viewController = HomeScreenVC(presenter: presenter)
+        presenter.viewInput = viewController
+        return viewController
     }
 }
