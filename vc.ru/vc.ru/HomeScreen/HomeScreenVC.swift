@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class HomeScreenVC: UIViewController, HomeScreenInput {
-    private let presenter: HomeScreenPresenterProtocol
+final class HomeScreenVC: UIViewController, HomeScreenController {
+    private let presenter: NewsPresenter
     private var presentedNews = [VCCellModel]()
     
-    fileprivate init(presenter: HomeScreenPresenterProtocol) {
+    fileprivate init(presenter: NewsPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,7 +27,7 @@ final class HomeScreenVC: UIViewController, HomeScreenInput {
         presenter.fetchNews()
     }
     
-    // MARK: HomeScreenInput
+    // MARK: HomeScreenController
     func display(news: [VCCellModel]) {
         presentedNews = news
         placeholderView?.uncover(animated: true)
@@ -94,7 +94,7 @@ extension HomeScreenVC: UITableViewDataSource, UITableViewDelegate {
 
 final class HomeScreenAssembly {
     func assemble(with networkService: NetworkService) -> UIViewController {
-        let presenter = HomeScreenPresenter(networkService: networkService)
+        let presenter = NewsPresenterInstance(networkService: networkService)
         let viewController = HomeScreenVC(presenter: presenter)
         presenter.viewInput = viewController
         return viewController

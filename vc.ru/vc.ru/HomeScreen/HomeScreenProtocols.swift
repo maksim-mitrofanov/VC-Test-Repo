@@ -1,5 +1,5 @@
 //
-//  HomeScreenInput.swift
+//  HomeScreenController.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 26.02.2024.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol HomeScreenInput: AnyObject {
+protocol HomeScreenController: AnyObject {
     func display(news: [VCCellModel])
 }
 
-protocol HomeScreenPresenterProtocol: AnyObject {
+protocol NewsPresenter: AnyObject {
     func fetchNews()
 }
 
