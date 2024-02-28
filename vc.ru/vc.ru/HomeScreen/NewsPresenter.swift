@@ -1,5 +1,5 @@
 //
-//  NewsPresenterInstance.swift
+//  NewsPresenter.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 02.10.2023.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-final class NewsPresenterInstance: NewsPresenter, NetworkServiceDelegate {
+final class NewsPresenter: HomeScreenPresenterProtocol, NetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
     
     private var presentedNews = [VCCellModel]()
     
-    weak var viewInput: HomeScreenController? 
+    weak var viewInput: HomeScreenViewProtocol? 
     private let networkService: NetworkService
     
     init(networkService: NetworkService) {
@@ -37,7 +37,7 @@ final class NewsPresenterInstance: NewsPresenter, NetworkServiceDelegate {
     }
 }
 
-private extension NewsPresenterInstance {
+private extension NewsPresenter {
     func getSubsiteAvatar(uuid: String) -> Data? {
         var avatarData: Data? = nil
         

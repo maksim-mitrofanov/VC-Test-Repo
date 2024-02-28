@@ -1,5 +1,5 @@
 //
-//  HomeScreenVC.swift
+//  HomeScreenViewController.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 25.09.2023.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class HomeScreenVC: UIViewController, HomeScreenController {
-    private let presenter: NewsPresenter
+final class HomeScreenViewController: UIViewController, HomeScreenViewProtocol {
+    private let presenter: HomeScreenPresenterProtocol
     private var presentedNews = [VCCellModel]()
     
-    fileprivate init(presenter: NewsPresenter) {
+    fileprivate init(presenter: HomeScreenPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -49,7 +49,7 @@ final class HomeScreenVC: UIViewController, HomeScreenController {
 }
 
 // MARK: - Table View
-extension HomeScreenVC: UITableViewDataSource, UITableViewDelegate {
+extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     private func setupTableViewLayout() {
         view.addSubview(mainTableView)
         mainTableView.separatorStyle = .none
@@ -94,8 +94,8 @@ extension HomeScreenVC: UITableViewDataSource, UITableViewDelegate {
 
 final class HomeScreenAssembly {
     func assemble(with networkService: NetworkService) -> UIViewController {
-        let presenter = NewsPresenterInstance(networkService: networkService)
-        let viewController = HomeScreenVC(presenter: presenter)
+        let presenter = NewsPresenter(networkService: networkService)
+        let viewController = HomeScreenViewController(presenter: presenter)
         presenter.viewInput = viewController
         return viewController
     }
