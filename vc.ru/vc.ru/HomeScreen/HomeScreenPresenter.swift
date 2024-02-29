@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HomeScreenPresenter: HomeScreenViewPresenter, NewsFeedNetworkServiceDelegate {
+final class HomeScreenPresenter: HomeScreenViewPresenter {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
     
@@ -20,12 +20,13 @@ final class HomeScreenPresenter: HomeScreenViewPresenter, NewsFeedNetworkService
     
     init(networkService: NewsFeedNetworkService) {
         self.networkService = networkService
-        networkService.presenter = self
     }
     
     func loadMoreData() {
         if !isFetchingNews {
-            networkService.fetchNews(lastId: lastElementID)
+            networkService.fetchNews(lastId: lastElementID) { [weak self] data in
+                self?.receiveNews(data: data)
+            }
             isFetchingNews = true
         }
     }
@@ -104,6 +105,7 @@ private extension HomeScreenPresenter {
         }
         
         group.notify(queue: .main) {
+            self.isFetchingNews = false
             self.viewInput?.display(news: self.presentedNews)
         }
     }

@@ -16,9 +16,8 @@ protocol HomeScreenViewPresenter: AnyObject {
 }
 
 protocol NewsFeedNetworkService: AnyObject {
-    func fetchNews(lastId: Int?)
-    func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void)) 
-    var presenter: NewsFeedNetworkServiceDelegate? { get set }
+    func fetchNews(lastId: Int?, completion: @escaping ((ServerFeedback?) -> Void))
+    func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void))
 }
 
 protocol NewsFeedNetworkServiceDelegate: AnyObject {

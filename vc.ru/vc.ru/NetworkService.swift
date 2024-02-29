@@ -7,10 +7,8 @@
 
 import Foundation
 
-final class NetworkService: NewsFeedNetworkService {    
-    weak var presenter: NewsFeedNetworkServiceDelegate? = nil
-        
-    func fetchNews(lastId id: Int? = nil) {
+final class NetworkService: NewsFeedNetworkService {
+    func fetchNews(lastId id: Int? = nil, completion: @escaping ((ServerFeedback?) -> Void)) {
         let request = generateNewsRequest(lastID: id)
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
@@ -18,7 +16,7 @@ final class NetworkService: NewsFeedNetworkService {
             else { return }
             
             let decodedData = self?.decode(data: data)
-            self?.presenter?.receiveNews(data: decodedData)
+            completion(decodedData)
         }
         
         task.resume()
