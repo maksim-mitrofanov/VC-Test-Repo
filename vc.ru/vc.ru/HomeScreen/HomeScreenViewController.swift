@@ -43,9 +43,8 @@ extension HomeScreenViewController: HomeScreenViewInput {
 // MARK: - Table View
 extension HomeScreenViewController {
     private func setupTableView() {
-        tableViewCoordinator = NewsFeedTableViewCoordinator(tableView: mainTableView, shouldShowCoverIfEmpty: true)
+        tableViewCoordinator = NewsFeedTableViewCoordinator(tableView: mainTableView, setupWithEmptyState: true)
         tableViewCoordinator?.onPrefetchRequest = { [weak self] in self?.presenter.loadMoreData() }
-        tableViewCoordinator?.setup(with: [])
         mainTableView.delegate = tableViewCoordinator
         mainTableView.dataSource = tableViewCoordinator
         mainTableView.prefetchDataSource = tableViewCoordinator

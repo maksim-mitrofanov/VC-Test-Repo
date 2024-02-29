@@ -11,10 +11,11 @@ final class NewsFeedTableViewCoordinator: UIViewController, NewsFeedTableCoordin
     
     private var presentedNews = [VCCellModel]()
     
-    init(tableView: UITableView, shouldShowCoverIfEmpty: Bool) {
-        self.tableView = tableView
-        self.shouldShowCoverIfEmpty = shouldShowCoverIfEmpty
+    init(tableView: UITableView, setupWithEmptyState: Bool) {
         super.init(nibName: nil, bundle: nil)
+        self.tableView = tableView
+        presentedNews = [.empty, .empty]
+        coverTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -22,20 +23,15 @@ final class NewsFeedTableViewCoordinator: UIViewController, NewsFeedTableCoordin
     }
     
     func setup(with news: [VCCellModel]) {
-        if shouldShowCoverIfEmpty && news.isEmpty {
-            presentedNews = [.empty, .empty]
-            coverTableView()
-        } else {
-            presentedNews = news
-            uncoverTableView()
-            tableView?.reloadData()
-        }
+        presentedNews = news
+        if isCovered { uncoverTableView() }
+        tableView?.reloadData()
     }
     
     
     // MARK: - Placeholder view
     private var placeholderView: LoadingPlaceholderView? = nil
-    private let shouldShowCoverIfEmpty: Bool
+    private var isCovered: Bool { placeholderView != nil }
 
     private func coverTableView() {
         if let tableView {
