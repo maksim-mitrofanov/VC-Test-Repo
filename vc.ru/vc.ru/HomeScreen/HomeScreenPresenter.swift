@@ -7,33 +7,29 @@
 
 import UIKit
 
-final class NewsFeedPresenter {
+final class HomeScreenPresenter: HomeScreenViewPresenter, NewsFeedNetworkServiceDelegate {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
     
-    private var presentedNews = [VCCellModel]()
+    private var presentedNews = [NewsBlockModel]()
     
     weak var viewInput: HomeScreenViewInput? 
-    private let networkService: NetworkService
+    private let networkService: NewsFeedNetworkService
     
     private var isFetchingNews: Bool = false
     
-    init(networkService: NetworkService) {
+    init(networkService: NewsFeedNetworkService) {
         self.networkService = networkService
         networkService.presenter = self
     }
-}
-
-extension NewsFeedPresenter: HomeScreenPresenter {
+    
     func loadMoreData() {
         if !isFetchingNews {
             networkService.fetchNews(lastId: lastElementID)
             isFetchingNews = true
         }
     }
-}
-
-extension NewsFeedPresenter: NetworkServiceDelegate {
+    
     func receiveNews(data: ServerFeedback?) {
         if let news = data?.result.news {
             appendToPresentedNews(models: news)
@@ -42,7 +38,7 @@ extension NewsFeedPresenter: NetworkServiceDelegate {
     }
 }
 
-private extension NewsFeedPresenter {
+private extension HomeScreenPresenter {
     func getSubsiteAvatar(uuid: String) -> Data? {
         var avatarData: Data? = nil
         
@@ -82,7 +78,7 @@ private extension NewsFeedPresenter {
                 let articleSubtitle = model.getArticleSubtitle()
                 let timeDescription = TimeDecoder.getDescriptionFor(unixTime: model.date)
                 
-                let model = VCCellModel(
+                let model = NewsBlockModel(
                     subsiteImageData: avatarImageData,
                     subsiteName: model.subsite.name,
                     articleImageData: articleImageData,

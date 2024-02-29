@@ -1,5 +1,5 @@
 //
-//  VCCellModel.swift
+//  NewsBlockModel.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 28.09.2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VCCellModel: Equatable, Hashable {
+struct NewsBlockModel: Equatable, Hashable {
     let subsiteImageData: Data?
     let subsiteName: String
     let articleImageData: Data?
@@ -21,8 +21,8 @@ struct VCCellModel: Equatable, Hashable {
     let id: Int
 }
 
-extension VCCellModel {
-    static let empty = VCCellModel(
+extension NewsBlockModel {
+    static let empty = NewsBlockModel(
         subsiteImageData: nil,
         subsiteName: "Placeholder",
         articleImageData: nil,

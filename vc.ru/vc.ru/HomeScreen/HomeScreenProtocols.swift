@@ -6,17 +6,26 @@
 //
 
 import UIKit
-import Foundation
 
 protocol HomeScreenViewInput: AnyObject {
-    func display(news: [VCCellModel])
+    func display(news: [NewsBlockModel])
 }
 
-protocol HomeScreenPresenter: AnyObject {
+protocol HomeScreenViewPresenter: AnyObject {
     func loadMoreData()
 }
 
-protocol NewsFeedTableCoordinator: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
-    func setup(with: [VCCellModel])
+protocol NewsFeedNetworkService: AnyObject {
+    func fetchNews(lastId: Int?)
+    func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void)) 
+    var presenter: NewsFeedNetworkServiceDelegate? { get set }
+}
+
+protocol NewsFeedNetworkServiceDelegate: AnyObject {
+    func receiveNews(data: ServerFeedback?)
+}
+
+protocol NewsFeedViewCoordinator: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+    func show(news: [NewsBlockModel])
     var onPrefetchRequest: (() -> Void)? { get set }
 }

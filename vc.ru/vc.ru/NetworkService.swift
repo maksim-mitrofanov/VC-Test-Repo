@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class NetworkService {    
-    weak var presenter: NetworkServiceDelegate? = nil
+final class NetworkService: NewsFeedNetworkService {    
+    weak var presenter: NewsFeedNetworkServiceDelegate? = nil
         
     func fetchNews(lastId id: Int? = nil) {
         let request = generateNewsRequest(lastID: id)
@@ -36,10 +36,6 @@ final class NetworkService {
         
         task.resume()
     }
-}
-
-protocol NetworkServiceDelegate: AnyObject {
-    func receiveNews(data: ServerFeedback?)
 }
 
 private extension NetworkService {

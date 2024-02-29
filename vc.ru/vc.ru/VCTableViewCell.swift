@@ -18,7 +18,7 @@ class VCTableViewCell: UITableViewCell {
         self.accessibilityIdentifier = VCTableViewCell.accessibilityIdentifier
     }
 
-    func setup(from displayedModel: VCCellModel) {
+    func setup(from displayedModel: NewsBlockModel) {
         updateDisplayedModel(to: displayedModel)
     }
     
@@ -70,7 +70,7 @@ private extension VCTableViewCell {
         setupFeedbackControlsStackView()
     }
     
-    func updateDisplayedModel(to model: VCCellModel) {
+    func updateDisplayedModel(to model: NewsBlockModel) {
         subsiteNameLabel.text = model.subsiteName
         timeSincePublishedLabel.text = model.timeSincePublished
         articleTitleLabel.text = model.title

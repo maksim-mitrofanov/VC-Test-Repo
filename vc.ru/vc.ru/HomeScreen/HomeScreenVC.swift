@@ -1,5 +1,5 @@
 //
-//  HomeScreenViewController.swift
+//  HomeScreenVC.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 25.09.2023.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class HomeScreenViewController: UIViewController {
+final class HomeScreenVC: UIViewController {
     private let presenter: HomeScreenPresenter
-    private var tableViewCoordinator: NewsFeedTableCoordinator?
+    private var tableViewCoordinator: NewsFeedViewCoordinator?
     
-    fileprivate init(presenter: HomeScreenPresenter) {
+    init(presenter: HomeScreenPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,17 +34,18 @@ final class HomeScreenViewController: UIViewController {
     }()
 }
 
-extension HomeScreenViewController: HomeScreenViewInput {
-    func display(news: [VCCellModel]) {
-        tableViewCoordinator?.setup(with: news)
+extension HomeScreenVC: HomeScreenViewInput {
+    func display(news: [NewsBlockModel]) {
+        tableViewCoordinator?.show(news: news)
     }
 }
 
 // MARK: - Table View
-extension HomeScreenViewController {
+extension HomeScreenVC {
     private func setupTableView() {
-        tableViewCoordinator = NewsFeedTableViewCoordinator(tableView: mainTableView, setupWithEmptyState: true)
+        tableViewCoordinator = NewsFeedCoordinator(tableView: mainTableView, setupWithEmptyState: true)
         tableViewCoordinator?.onPrefetchRequest = { [weak self] in self?.presenter.loadMoreData() }
+        
         mainTableView.delegate = tableViewCoordinator
         mainTableView.dataSource = tableViewCoordinator
         mainTableView.prefetchDataSource = tableViewCoordinator
@@ -60,14 +61,5 @@ extension HomeScreenViewController {
             mainTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-}
-
-final class HomeScreenAssembly {
-    func assemble(with networkService: NetworkService) -> UIViewController {
-        let presenter = NewsFeedPresenter(networkService: networkService)
-        let viewController = HomeScreenViewController(presenter: presenter)
-        presenter.viewInput = viewController
-        return viewController
     }
 }

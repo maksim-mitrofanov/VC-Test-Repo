@@ -1,5 +1,5 @@
 //
-//  NewsFeedTableViewCoordinator.swift
+//  NewsFeedCoordinator.swift
 //  vc.ru
 //
 //  Created by  Maksim on 29.02.24.
@@ -7,25 +7,28 @@
 
 import UIKit
 
-final class NewsFeedTableViewCoordinator: UIViewController, NewsFeedTableCoordinator {
+final class NewsFeedCoordinator: UIViewController, NewsFeedViewCoordinator {
     
-    private var presentedNews = [VCCellModel]()
+    private var presentedNews = [NewsBlockModel]()
     
     init(tableView: UITableView, setupWithEmptyState: Bool) {
         super.init(nibName: nil, bundle: nil)
-        self.tableView = tableView
-        presentedNews = [.empty, .empty]
-        coverTableView()
+        self.presentedTableView = tableView
+        
+        if setupWithEmptyState {
+            presentedNews = [.empty, .empty]
+            coverTableView()
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(with news: [VCCellModel]) {
+    func show(news: [NewsBlockModel]) {
         presentedNews = news
         if isCovered { uncoverTableView() }
-        tableView?.reloadData()
+        presentedTableView?.reloadData()
     }
     
     
@@ -34,20 +37,20 @@ final class NewsFeedTableViewCoordinator: UIViewController, NewsFeedTableCoordin
     private var isCovered: Bool { placeholderView != nil }
 
     private func coverTableView() {
-        if let tableView {
+        if let presentedTableView {
             placeholderView = LoadingPlaceholderView()
-            placeholderView?.cover(tableView)
-            tableView.isUserInteractionEnabled = false
+            placeholderView?.cover(presentedTableView)
+            presentedTableView.isUserInteractionEnabled = false
         }
     }
     
     private func uncoverTableView() {
         placeholderView?.uncover(animated: true)
-        tableView?.isUserInteractionEnabled = true
+        presentedTableView?.isUserInteractionEnabled = true
     }
     
     // MARK: - Table View Delegate, Data Source, Prefetch
-    weak var tableView: UITableView?
+    weak var presentedTableView: UITableView?
     var onPrefetchRequest: (() -> Void)? = nil
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
