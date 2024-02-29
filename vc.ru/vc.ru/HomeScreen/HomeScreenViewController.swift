@@ -7,9 +7,8 @@
 
 import UIKit
 
-final class HomeScreenViewController: UIViewController, HomeScreenViewProtocol {
+final class HomeScreenViewController: UIViewController {
     private let presenter: HomeScreenPresenterProtocol
-    private var presentedNews = [VCCellModel]()
     
     fileprivate init(presenter: HomeScreenPresenterProtocol) {
         self.presenter = presenter
@@ -24,15 +23,7 @@ final class HomeScreenViewController: UIViewController, HomeScreenViewProtocol {
         super.viewDidLoad()
         setupTableViewLayout()
         coverMainTableView()
-        presenter.fetchNews()
-    }
-    
-    // MARK: HomeScreenController
-    func display(news: [VCCellModel]) {
-        presentedNews = news
-        placeholderView?.uncover(animated: true)
-        mainTableView.isUserInteractionEnabled = true
-        mainTableView.reloadData()
+        presenter.viewDidLoad()
     }
     
     // MARK: Views
@@ -46,6 +37,14 @@ final class HomeScreenViewController: UIViewController, HomeScreenViewProtocol {
         tableView.register(VCTableViewCell.self, forCellReuseIdentifier: VCTableViewCell.id)
         return tableView
     }()
+}
+
+extension HomeScreenViewController: HomeScreenViewProtocol {
+    func reloadData() {
+        placeholderView?.uncover(animated: true)
+        mainTableView.isUserInteractionEnabled = true
+        mainTableView.reloadData()
+    }
 }
 
 // MARK: - Table View
@@ -71,7 +70,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presentedNews.count
+        return presenter.totalCellCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,14 +78,10 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
         else { fatalError() }
         
         let cellIndex = indexPath.section + indexPath.row
-        let model = presentedNews[cellIndex]
+        let model = presenter.getCellModel(at: cellIndex)
         
         presentedCell.setup(from: model)
         presentedCell.selectionStyle = .none
-        
-        if indexPath.row == presentedNews.count - 1 {
-            presenter.fetchNews()
-        }
         
         return presentedCell
     }

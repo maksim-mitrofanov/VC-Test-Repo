@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewsPresenter: HomeScreenPresenterProtocol, NetworkServiceDelegate {
+final class NewsPresenter {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
     
@@ -16,23 +16,49 @@ final class NewsPresenter: HomeScreenPresenterProtocol, NetworkServiceDelegate {
     weak var viewInput: HomeScreenViewProtocol? 
     private let networkService: NetworkService
     
+    private var isFetchingNews: Bool = false
+    
     init(networkService: NetworkService) {
         self.networkService = networkService
+        networkService.presenter = self
     }
-    
-    func fetchNews() {
+}
+
+extension NewsPresenter: HomeScreenPresenterProtocol {
+    func viewDidLoad() {
         if presentedNews.count == 0 {
             presentedNews = [.empty, .empty]
-            viewInput?.display(news: presentedNews)
-            networkService.presenter = self
+            viewInput?.reloadData()
         }
         
-        networkService.fetchNews(lastId: lastElementID)
+        loadMoreNews()
     }
     
+    func getCellModel(at index: Int) -> VCCellModel {
+        if index >= totalCellCount - 3 {
+            loadMoreNews()
+        }
+        guard presentedNews.count > index else { return .empty }
+        return presentedNews[index]
+    }
+    
+    var totalCellCount: Int {
+        presentedNews.count
+    }
+}
+
+extension NewsPresenter: NetworkServiceDelegate {
     func receiveNews(data: ServerFeedback?) {
         if let news = data?.result.news {
             appendToPresentedNews(models: news)
+            isFetchingNews = false
+        }
+    }
+    
+    private func loadMoreNews() {
+        if !isFetchingNews {
+            networkService.fetchNews(lastId: lastElementID)
+            isFetchingNews = true
         }
     }
 }
@@ -103,7 +129,7 @@ private extension NewsPresenter {
         }
         
         group.notify(queue: .main) {
-            self.viewInput?.display(news: self.presentedNews)
+            self.viewInput?.reloadData()
         }
     }
 }

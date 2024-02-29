@@ -8,11 +8,12 @@
 import Foundation
 
 protocol HomeScreenViewProtocol: AnyObject {
-    func display(news: [VCCellModel])
+    func reloadData()
 }
 
 protocol HomeScreenPresenterProtocol: AnyObject {
-    func fetchNews()
-    func 
+    func viewDidLoad()
+    func getCellModel(at index: Int) -> VCCellModel
+    var totalCellCount: Int { get }
 }
 
