@@ -1,19 +1,22 @@
 //
-//  HomeScreenViewProtocol.swift
+//  HomeScreenViewInput.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 26.02.2024.
 //
 
+import UIKit
 import Foundation
 
-protocol HomeScreenViewProtocol: AnyObject {
-    func reloadData()
+protocol HomeScreenViewInput: AnyObject {
+    func display(news: [VCCellModel])
 }
 
-protocol HomeScreenPresenterProtocol: AnyObject {
-    func viewDidLoad()
-    func getCellModel(at index: Int) -> VCCellModel
-    var totalCellCount: Int { get }
+protocol HomeScreenPresenter: AnyObject {
+    func loadMoreData()
 }
 
+protocol NewsFeedTableCoordinator: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+    func setup(with: [VCCellModel])
+    var onPrefetchRequest: (() -> Void)? { get set }
+}

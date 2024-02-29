@@ -1,5 +1,5 @@
 //
-//  NewsPresenter.swift
+//  NewsFeedPresenter.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 02.10.2023.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-final class NewsPresenter {
+final class NewsFeedPresenter {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
     
     private var presentedNews = [VCCellModel]()
     
-    weak var viewInput: HomeScreenViewProtocol? 
+    weak var viewInput: HomeScreenViewInput? 
     private let networkService: NetworkService
     
     private var isFetchingNews: Bool = false
@@ -24,38 +24,8 @@ final class NewsPresenter {
     }
 }
 
-extension NewsPresenter: HomeScreenPresenterProtocol {
-    func viewDidLoad() {
-        if presentedNews.count == 0 {
-            presentedNews = [.empty, .empty]
-            viewInput?.reloadData()
-        }
-        
-        loadMoreNews()
-    }
-    
-    func getCellModel(at index: Int) -> VCCellModel {
-        if index >= totalCellCount - 3 {
-            loadMoreNews()
-        }
-        guard presentedNews.count > index else { return .empty }
-        return presentedNews[index]
-    }
-    
-    var totalCellCount: Int {
-        presentedNews.count
-    }
-}
-
-extension NewsPresenter: NetworkServiceDelegate {
-    func receiveNews(data: ServerFeedback?) {
-        if let news = data?.result.news {
-            appendToPresentedNews(models: news)
-            isFetchingNews = false
-        }
-    }
-    
-    private func loadMoreNews() {
+extension NewsFeedPresenter: HomeScreenPresenter {
+    func loadMoreData() {
         if !isFetchingNews {
             networkService.fetchNews(lastId: lastElementID)
             isFetchingNews = true
@@ -63,7 +33,16 @@ extension NewsPresenter: NetworkServiceDelegate {
     }
 }
 
-private extension NewsPresenter {
+extension NewsFeedPresenter: NetworkServiceDelegate {
+    func receiveNews(data: ServerFeedback?) {
+        if let news = data?.result.news {
+            appendToPresentedNews(models: news)
+            isFetchingNews = false
+        }
+    }
+}
+
+private extension NewsFeedPresenter {
     func getSubsiteAvatar(uuid: String) -> Data? {
         var avatarData: Data? = nil
         
@@ -129,7 +108,7 @@ private extension NewsPresenter {
         }
         
         group.notify(queue: .main) {
-            self.viewInput?.reloadData()
+            self.viewInput?.display(news: self.presentedNews)
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VCCellModel: Equatable {
+struct VCCellModel: Equatable, Hashable {
     let subsiteImageData: Data?
     let subsiteName: String
     let articleImageData: Data?
