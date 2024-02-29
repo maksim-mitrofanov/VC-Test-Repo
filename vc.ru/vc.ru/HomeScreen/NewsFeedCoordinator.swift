@@ -25,7 +25,7 @@ final class NewsFeedCoordinator: UIViewController, NewsFeedViewCoordinator {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func show(news: [NewsBlockModel]) {
+    func present(news: [NewsBlockModel]) {
         presentedNews = news
         if isCovered { uncoverTableView() }
         presentedTableView?.reloadData()

@@ -8,7 +8,7 @@
 import Foundation
 
 final class NetworkService: NewsFeedNetworkService {
-    func fetchNews(lastId id: Int? = nil, completion: @escaping ((ServerFeedback?) -> Void)) {
+    func fetchNews(lastID id: Int? = nil, completion: @escaping ((ServerFeedback?) -> Void)) {
         let request = generateNewsRequest(lastID: id)
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in

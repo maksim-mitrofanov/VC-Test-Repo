@@ -22,9 +22,9 @@ final class HomeScreenPresenter: HomeScreenViewPresenter {
         self.networkService = networkService
     }
     
-    func loadMoreData() {
+    func loadMoreNews() {
         if !isFetchingNews {
-            networkService.fetchNews(lastId: lastElementID) { [weak self] data in
+            networkService.fetchNews(lastID: lastElementID) { [weak self] data in
                 self?.receiveNews(data: data)
             }
             isFetchingNews = true

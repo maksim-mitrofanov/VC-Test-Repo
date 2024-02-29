@@ -23,7 +23,7 @@ final class HomeScreenVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        presenter.loadMoreData()
+        presenter.loadMoreNews()
     }
         
     private lazy var mainTableView: UITableView = {
@@ -36,7 +36,7 @@ final class HomeScreenVC: UIViewController {
 
 extension HomeScreenVC: HomeScreenViewInput {
     func display(news: [NewsBlockModel]) {
-        tableViewCoordinator?.show(news: news)
+        tableViewCoordinator?.present(news: news)
     }
 }
 
@@ -44,7 +44,7 @@ extension HomeScreenVC: HomeScreenViewInput {
 extension HomeScreenVC {
     private func setupTableView() {
         tableViewCoordinator = NewsFeedCoordinator(tableView: mainTableView, setupWithEmptyState: true)
-        tableViewCoordinator?.onPrefetchRequest = { [weak self] in self?.presenter.loadMoreData() }
+        tableViewCoordinator?.onPrefetchRequest = { [weak self] in self?.presenter.loadMoreNews() }
         
         mainTableView.delegate = tableViewCoordinator
         mainTableView.dataSource = tableViewCoordinator

@@ -12,19 +12,15 @@ protocol HomeScreenViewInput: AnyObject {
 }
 
 protocol HomeScreenViewPresenter: AnyObject {
-    func loadMoreData()
+    func loadMoreNews()
 }
 
 protocol NewsFeedNetworkService: AnyObject {
-    func fetchNews(lastId: Int?, completion: @escaping ((ServerFeedback?) -> Void))
+    func fetchNews(lastID: Int?, completion: @escaping ((ServerFeedback?) -> Void))
     func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void))
 }
 
-protocol NewsFeedNetworkServiceDelegate: AnyObject {
-    func receiveNews(data: ServerFeedback?)
-}
-
 protocol NewsFeedViewCoordinator: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
-    func show(news: [NewsBlockModel])
+    func present(news: [NewsBlockModel])
     var onPrefetchRequest: (() -> Void)? { get set }
 }
