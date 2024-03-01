@@ -14,11 +14,11 @@ final class HomeScreenPresenter: HomeScreenViewPresenter {
     private var presentedNews = [NewsBlockModel]()
     
     weak var viewInput: HomeScreenViewInput? 
-    private let networkService: NewsFeedNetworkService
+    private let networkService: HomeScreenNetworkService
     
     private var isFetchingNews: Bool = false
     
-    init(networkService: NewsFeedNetworkService) {
+    init(networkService: HomeScreenNetworkService) {
         self.networkService = networkService
     }
     

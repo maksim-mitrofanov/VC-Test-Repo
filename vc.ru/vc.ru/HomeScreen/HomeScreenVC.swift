@@ -9,7 +9,7 @@ import UIKit
 
 final class HomeScreenVC: UIViewController {
     private let presenter: HomeScreenPresenter
-    private var tableViewCoordinator: NewsFeedViewCoordinator?
+    private var tableViewCoordinator: NewsFeedTableViewCoordinator?
     
     init(presenter: HomeScreenPresenter) {
         self.presenter = presenter

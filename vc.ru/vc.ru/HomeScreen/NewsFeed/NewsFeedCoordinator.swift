@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewsFeedCoordinator: UIViewController, NewsFeedViewCoordinator {
+final class NewsFeedCoordinator: UIViewController, NewsFeedTableViewCoordinator {
     
     private var presentedNews = [NewsBlockModel]()
     

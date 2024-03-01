@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class NetworkService: NewsFeedNetworkService {
+final class NetworkService: HomeScreenNetworkService {
     func fetchNews(lastID id: Int? = nil, completion: @escaping ((ServerFeedback?) -> Void)) {
         let request = generateNewsRequest(lastID: id)
         
