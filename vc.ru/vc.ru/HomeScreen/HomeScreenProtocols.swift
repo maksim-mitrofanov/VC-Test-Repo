@@ -15,11 +15,11 @@ protocol HomeScreenViewPresenter: AnyObject {
     func loadMoreNews()
 }
 
-protocol HomeScreenInteractor: AnyObject {
-    func loadMoreNews(lastElementID: Int?, completion: @escaping (([NewsBlockModel]) -> Void))
+protocol HomeScreenViewInteractor: AnyObject {
+    func loadMoreNews(completion: @escaping (([NewsBlockModel]) -> Void))
 }
 
-protocol HomeScreenNetworkService: AnyObject {
+protocol HomeScreenViewNetworkService: AnyObject {
     func fetchNews(lastID: Int?, completion: @escaping ((ServerFeedback?) -> Void))
     func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void))
 }

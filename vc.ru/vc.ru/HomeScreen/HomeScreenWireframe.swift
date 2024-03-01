@@ -8,8 +8,9 @@
 import UIKit
 
 final class HomeScreenWireframe {
-    func assemble(with networkService: HomeScreenNetworkService) -> UIViewController {
-        let presenter = HomeScreenPresenter(networkService: networkService)
+    func assemble(with networkService: HomeScreenViewNetworkService) -> UIViewController {
+        let interactor = HomeScreenInteractor(networkService: networkService)
+        let presenter = HomeScreenPresenter(interactor: interactor)
         let viewController = HomeScreenVC(presenter: presenter)
         presenter.viewInput = viewController
         return viewController
