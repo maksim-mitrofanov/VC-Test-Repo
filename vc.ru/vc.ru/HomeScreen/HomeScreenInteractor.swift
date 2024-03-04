@@ -18,6 +18,18 @@ final class HomeScreenInteractor: HomeScreenViewInteractor {
     private var subsiteAvaratarCache = [String:Data?]()
     private var lastElementID: Int? = nil
     private var isFetchingNews: Bool = false
+    private var decodedNews = [NewsBlockModel]()
+    private var hasFinishedDecoding = false {
+        didSet {
+            if hasFinishedDecoding {
+                decodeCompletion?(decodedNews)
+                decodedNews = []
+                isFetchingNews = false
+                hasFinishedDecoding = false
+            }
+        }
+    }
+    private var decodeCompletion: (([NewsBlockModel]) -> Void)?
     
     func loadMoreNews(completion: @escaping (([NewsBlockModel]) -> Void)) {
         guard !isFetchingNews else { return }
@@ -25,13 +37,14 @@ final class HomeScreenInteractor: HomeScreenViewInteractor {
         isFetchingNews = true
         networkService.fetchNews(lastID: lastElementID) { [weak self] serverFeedback in
             guard let news = serverFeedback?.result.news else { return }
-            guard let decodedNews = self?.decode(models: news) else { return }
-            completion(decodedNews)
+            self?.decodeCompletion = completion
+            self?.decode(models: news)
         }
     }
-    
-    // Caching
-    private func fetchAsset(uuid: String) -> Data? {
+}
+
+private extension HomeScreenInteractor {
+    func getSubsiteAvatar(uuid: String) -> Data? {
         var avatarData: Data? = nil
         
         if let cachedData = subsiteAvaratarCache[uuid] { avatarData = cachedData }
@@ -51,11 +64,10 @@ final class HomeScreenInteractor: HomeScreenViewInteractor {
         return avatarData
     }
     
-    private func decode(models: [ServerFeedback.NewsEntry]) -> [NewsBlockModel] {
+    func decode(models: [ServerFeedback.NewsEntry]) {
+        decodedNews = []
         lastElementID = models.last?.id
-        
-        let group = DispatchGroup()
-        var decodedModels = [NewsBlockModel]()
+        let group = DispatchGroup() // Создаем новую группу диспетчеризации
         
         models.forEach { model in
             var avatarImageData: Data? = Data()
@@ -65,8 +77,8 @@ final class HomeScreenInteractor: HomeScreenViewInteractor {
             
             DispatchQueue.global(qos: .userInteractive).async {
                 
-//                avatarImageData = self.fetchAsset(uuid: model.subsite.avatar.data.uuid)
-//                articleImageData = self.fetchAsset(uuid: model.getArticleImageUUID())
+                avatarImageData = self.getSubsiteAvatar(uuid: model.subsite.avatar.data.uuid)
+                articleImageData = self.getSubsiteAvatar(uuid: model.getArticleImageUUID())
                 
                 let articleSubtitle = model.getArticleSubtitle()
                 let timeDescription = TimeDecoder.getDescriptionFor(unixTime: model.date)
@@ -85,17 +97,16 @@ final class HomeScreenInteractor: HomeScreenViewInteractor {
                     id: model.id
                 )
                 
-                if !decodedModels.contains(where: { $0.id == model.id }) {
-                    decodedModels.append(model)
+                if !self.decodedNews.contains(where: { $0.id == model.id }) {
+                    self.decodedNews.append(model)
                 }
                 
                 group.leave() // Указываем, что текущая асинхронная операция завершена
             }
-            
-            group.wait()
         }
         
-        isFetchingNews = false
-        return decodedModels
+        group.notify(queue: .main) {
+            self.hasFinishedDecoding = true
+        }
     }
 }
