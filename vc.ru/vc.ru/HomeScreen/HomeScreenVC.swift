@@ -46,8 +46,6 @@ extension HomeScreenVC {
         tableViewCoordinator = NewsFeedCoordinator(tableView: mainTableView, setupWithEmptyState: true)
         tableViewCoordinator?.onPrefetchRequest = { [weak self] in self?.presenter.loadMoreNews() }
         
-        mainTableView.delegate = tableViewCoordinator
-        mainTableView.dataSource = tableViewCoordinator
         mainTableView.prefetchDataSource = tableViewCoordinator
         
         view.addSubview(mainTableView)

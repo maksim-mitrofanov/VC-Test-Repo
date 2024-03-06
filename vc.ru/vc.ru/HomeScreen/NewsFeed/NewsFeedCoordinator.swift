@@ -10,15 +10,22 @@ import UIKit
 final class NewsFeedCoordinator: UIViewController, NewsFeedTableViewCoordinator {
     
     private var presentedNews = [NewsBlockModel]()
+    weak var presentedTableView: UITableView?
     
     init(tableView: UITableView, setupWithEmptyState: Bool) {
-        super.init(nibName: nil, bundle: nil)
         self.presentedTableView = tableView
+        self.tableViewDataSource = TableViewDataSource(tableView: tableView, cellProvider: { tableView, indexPath, itemIdentifier in
+            guard let presentedCell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
+            else { fatalError() }
+                        
+            presentedCell.setup(from: itemIdentifier)
+            presentedCell.selectionStyle = .none
+            
+            return presentedCell
+        })
         
-        if setupWithEmptyState {
-            presentedNews = [.empty, .empty]
-            coverTableView()
-        }
+        super.init(nibName: nil, bundle: nil)
+        if setupWithEmptyState { setupEmptyState() }
     }
     
     required init?(coder: NSCoder) {
@@ -28,9 +35,23 @@ final class NewsFeedCoordinator: UIViewController, NewsFeedTableViewCoordinator 
     func present(news: [NewsBlockModel]) {
         presentedNews = news
         if isCovered { uncoverTableView() }
-        presentedTableView?.reloadData()
+        
+        var snapshot = TableViewDataSnapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(news, toSection: .main)
+        tableViewDataSource.apply(snapshot)
     }
     
+    // MARK: - DiffableDataSource
+    private let tableViewDataSource: TableViewDataSource
+    
+    typealias TableViewDataSource = UITableViewDiffableDataSource<Section, NewsBlockModel>
+    typealias TableViewDataSnapshot = NSDiffableDataSourceSnapshot<Section, NewsBlockModel>
+    
+    enum Section {
+        case main
+    }
+      
     
     // MARK: - Placeholder view
     private var placeholderView: LoadingPlaceholderView? = nil
@@ -49,26 +70,13 @@ final class NewsFeedCoordinator: UIViewController, NewsFeedTableViewCoordinator 
         presentedTableView?.isUserInteractionEnabled = true
     }
     
+    private func setupEmptyState() {
+        presentedNews = [.empty, .empty]
+        coverTableView()
+    }
+    
     // MARK: - Table View Delegate, Data Source, Prefetch
-    weak var presentedTableView: UITableView?
     var onPrefetchRequest: (() -> Void)? = nil
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presentedNews.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let presentedCell = tableView.dequeueReusableCell(withIdentifier: VCTableViewCell.id, for: indexPath) as? VCTableViewCell
-        else { fatalError() }
-        
-        let cellIndex = indexPath.section + indexPath.row
-        let model = presentedNews[cellIndex]
-        
-        presentedCell.setup(from: model)
-        presentedCell.selectionStyle = .none
-        
-        return presentedCell
-    }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         onPrefetchRequest?()

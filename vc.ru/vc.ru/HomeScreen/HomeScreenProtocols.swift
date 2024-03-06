@@ -24,7 +24,7 @@ protocol HomeScreenViewNetworkService: AnyObject {
     func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void))
 }
 
-protocol NewsFeedTableViewCoordinator: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+protocol NewsFeedTableViewCoordinator: UITableViewDataSourcePrefetching {
     func present(news: [NewsBlockModel])
     var onPrefetchRequest: (() -> Void)? { get set }
 }
