@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewsFeedCoordinator: UIViewController, NewsFeedTableViewCoordinator {
+final class NewsFeedCoordinator: UIViewController, INewsFeedViewCoordinator {
     
     private var presentedNews = [NewsBlockModel]()
     weak var presentedTableView: UITableView?

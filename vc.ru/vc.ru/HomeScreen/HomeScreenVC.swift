@@ -9,7 +9,7 @@ import UIKit
 
 final class HomeScreenVC: UIViewController {
     private let presenter: HomeScreenPresenter
-    private var tableViewCoordinator: NewsFeedTableViewCoordinator?
+    private var tableViewCoordinator: INewsFeedViewCoordinator?
     
     init(presenter: HomeScreenPresenter) {
         self.presenter = presenter
@@ -34,7 +34,7 @@ final class HomeScreenVC: UIViewController {
     }()
 }
 
-extension HomeScreenVC: HomeScreenViewInput {
+extension HomeScreenVC: IHomeScreenView {
     func display(news: [NewsBlockModel]) {
         tableViewCoordinator?.present(news: news)
     }

@@ -1,5 +1,5 @@
 //
-//  HomeScreenViewInput.swift
+//  IHomeScreenView.swift
 //  vc.ru
 //
 //  Created by Максим Митрофанов on 26.02.2024.
@@ -7,24 +7,24 @@
 
 import UIKit
 
-protocol HomeScreenViewInput: AnyObject {
+protocol IHomeScreenView: AnyObject {
     func display(news: [NewsBlockModel])
 }
 
-protocol HomeScreenViewPresenter: AnyObject {
+protocol IHomeScreenPresenter: AnyObject {
     func loadMoreNews()
 }
 
-protocol HomeScreenViewInteractor: AnyObject {
+protocol IHomeScreenInteractor: AnyObject {
     func loadMoreNews(completion: @escaping (([NewsBlockModel]) -> Void))
 }
 
-protocol HomeScreenViewNetworkService: AnyObject {
+protocol IHomeScreenNetworkService: AnyObject {
     func fetchNews(lastID: Int?, completion: @escaping ((ServerFeedback?) -> Void))
     func fetchAsset(uuid: String, completion: @escaping ((Data?) -> Void))
 }
 
-protocol NewsFeedTableViewCoordinator: UITableViewDataSourcePrefetching {
+protocol INewsFeedViewCoordinator: UITableViewDataSourcePrefetching {
     func present(news: [NewsBlockModel])
     var onPrefetchRequest: (() -> Void)? { get set }
 }

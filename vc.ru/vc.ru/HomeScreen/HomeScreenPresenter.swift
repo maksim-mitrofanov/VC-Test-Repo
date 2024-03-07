@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class HomeScreenPresenter: HomeScreenViewPresenter {
+final class HomeScreenPresenter: IHomeScreenPresenter {
     private var presentedNews = [NewsBlockModel]()
-    weak var viewInput: HomeScreenViewInput?
-    private var interactor: HomeScreenViewInteractor
+    weak var viewInput: IHomeScreenView?
+    private var interactor: IHomeScreenInteractor
     
-    init(interactor: HomeScreenViewInteractor) {
+    init(interactor: IHomeScreenInteractor) {
         self.interactor = interactor
     }
     

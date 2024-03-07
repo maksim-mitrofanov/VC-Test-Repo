@@ -7,10 +7,10 @@
 
 import Foundation
 
-final class HomeScreenInteractor: HomeScreenViewInteractor {
-    private let networkService: HomeScreenViewNetworkService
+final class HomeScreenInteractor: IHomeScreenInteractor {
+    private let networkService: IHomeScreenNetworkService
     
-    init(networkService: HomeScreenViewNetworkService) {
+    init(networkService: IHomeScreenNetworkService) {
         self.networkService = networkService
     }
     
