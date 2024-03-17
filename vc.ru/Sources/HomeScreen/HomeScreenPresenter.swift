@@ -8,6 +8,7 @@
 import UIKit
 
 final class HomeScreenPresenter: HomeScreenViewPresenter {
+    // will cause stackoverflow if presentedNews.count is too large
     private var presentedNews = [NewsBlockModel]()
     weak var viewInput: HomeScreenViewInput?
     private var interactor: HomeScreenViewInteractor
