@@ -427,7 +427,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"/opt/homebrew/bin:$PATH\"\nneedle generate Sources/NeedleGenerated.swift Sources/\n";
+			shellScript = "#export PATH=\"/opt/homebrew/bin:$PATH\"\n#needle generate Sources/NeedleGenerated.swift Sources/\n";
 		};
 		BBFCCB221CBDE3A383FD25DE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
